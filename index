@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Projeto Quimera: Dilema do Operativo</title>
   <style>
     :root {
@@ -47,13 +46,22 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
     }
-    header { padding: var(--space-8); display: grid; gap: var(--space-4); margin-bottom: var(--space-8); }
+    header {
+      padding: var(--space-8);
+      display: grid;
+      gap: var(--space-4);
+      margin-bottom: var(--space-8);
+    }
     h1, h2, h3 { margin: 0; line-height: 1.15; }
     h1 { font-size: clamp(2.2rem, 4vw, 4rem); }
     h2 { font-size: clamp(1.5rem, 2vw, 2.1rem); }
     p { margin: 0; }
     .small-text { color: var(--muted); font-size: 0.95rem; }
-    .section { display: grid; gap: var(--space-4); margin-top: var(--space-8); }
+    .section {
+      display: grid;
+      gap: var(--space-4);
+      margin-top: var(--space-8);
+    }
     .summary-bar, .flex-row {
       display: grid;
       gap: var(--space-4);
@@ -67,8 +75,16 @@
       border-radius: 12px;
     }
     .map-lab, .card { padding: var(--space-6); }
-    .envelope-title { margin-bottom: var(--space-3); font-weight: 700; color: var(--primary); }
-    label { display: block; margin: var(--space-3) 0 var(--space-2); font-weight: 600; }
+    .envelope-title {
+      margin-bottom: var(--space-3);
+      font-weight: 700;
+      color: var(--primary);
+    }
+    label {
+      display: block;
+      margin: var(--space-3) 0 var(--space-2);
+      font-weight: 600;
+    }
     input, select, textarea, button {
       width: 100%;
       padding: 0.95rem 1rem;
@@ -76,7 +92,10 @@
       border: 1px solid var(--border);
       font: inherit;
     }
-    input, select, textarea { background: var(--surface); color: var(--text); }
+    input, select, textarea {
+      background: var(--surface);
+      color: var(--text);
+    }
     textarea { min-height: 120px; resize: vertical; }
     button {
       margin-top: var(--space-4);
@@ -86,9 +105,16 @@
       cursor: pointer;
     }
     button:hover { background: var(--primary-hover); }
-    button.secondary { background: transparent; color: var(--primary); }
+    button.secondary {
+      background: transparent;
+      color: var(--primary);
+    }
     button.secondary:hover { background: rgba(11, 107, 111, 0.08); }
-    button:disabled { opacity: 0.55; cursor: not-allowed; background: #7ea0a3; }
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      background: #7ea0a3;
+    }
     .dossier {
       padding: var(--space-4);
       border: 1px solid var(--border);
@@ -105,9 +131,18 @@
       font-size: 0.85rem;
       font-weight: 700;
     }
-    .badge.leal { background: rgba(45,110,30,0.12); color: var(--success); }
-    .badge.sabotador { background: rgba(157,44,83,0.12); color: var(--error); }
-    .badge.oportunista { background: rgba(154,97,25,0.12); color: var(--warning); }
+    .badge.leal {
+      background: rgba(45,110,30,0.12);
+      color: var(--success);
+    }
+    .badge.sabotador {
+      background: rgba(157,44,83,0.12);
+      color: var(--error);
+    }
+    .badge.oportunista {
+      background: rgba(154,97,25,0.12);
+      color: var(--warning);
+    }
     .puzzle-result, .notif {
       margin-top: var(--space-4);
       padding: var(--space-4);
@@ -115,86 +150,122 @@
       border: 1px solid var(--border);
       background: var(--surface-2);
     }
-    .success-state { color: var(--success); border-color: rgba(45,110,30,0.35); background: rgba(45,110,30,0.08); }
-    .error-state { color: var(--error); border-color: rgba(157,44,83,0.35); background: rgba(157,44,83,0.08); }
-    .warn-state { color: var(--warning); border-color: rgba(154,97,25,0.35); background: rgba(154,97,25,0.08); }
+    .success-state {
+      color: var(--success);
+      border-color: rgba(45,110,30,0.35);
+      background: rgba(45,110,30,0.08);
+    }
+    .error-state {
+      color: var(--error);
+      border-color: rgba(157,44,83,0.35);
+      background: rgba(157,44,83,0.08);
+    }
+    .warn-state {
+      color: var(--warning);
+      border-color: rgba(154,97,25,0.35);
+      background: rgba(154,97,25,0.08);
+    }
     .hidden { display: none !important; }
-    table { width: 100%; border-collapse: collapse; margin-top: var(--space-4); }
-    th, td { padding: 0.9rem; border: 1px solid var(--border); text-align: left; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--space-4);
+    }
+    th, td {
+      padding: 0.9rem;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
     th { background: var(--surface-2); }
-    .scenario-active { outline: 2px solid var(--primary); outline-offset: 2px; }
-    ul.small-text { margin: 0; padding-left: 1.2rem; }
-    .btn-row { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+    .scenario-active {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+    ul.small-text {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+    .btn-row {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr 1fr;
+    }
     @media (max-width: 640px) {
       .page { padding-inline: 14px; }
       header, .card, .map-lab, .summary-bar { padding: var(--space-5); }
       .btn-row { grid-template-columns: 1fr; }
     }
-#puzzle2-grid {
-  display: inline-grid;
-  grid-template-columns: repeat(32, 1.8rem);
-  gap: 2px;
-  margin-bottom: 1rem;
-}
-
-.puzzle2-cell {
-  width: 1.8rem;
-  height: 1.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #ccc;
-  font-family: monospace;
-  font-size: 1.1rem;
-  cursor: pointer;
-  user-select: none;
-  background-color: #fff;
-}
-
-.puzzle2-cell.selected {
-  background-color: #cde4ff;
-}
-
-.puzzle2-cell.found {
-  background-color: #8bc34a;
-  color: #fff;
-}
-
-#puzzle2-words span {
-  margin-right: 0.5rem;
-  display: inline-block;
-}
-
-#puzzle2-words span.found {
-  text-decoration: line-through;
-  color: #8bc34a;
-}
-
+    #puzzle2-grid {
+      display: inline-grid;
+      grid-template-columns: repeat(32, 1.8rem);
+      gap: 2px;
+      margin-bottom: 1rem;
+    }
+    .puzzle2-cell {
+      width: 1.8rem;
+      height: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #ccc;
+      font-family: monospace;
+      font-size: 1.1rem;
+      cursor: pointer;
+      user-select: none;
+      background-color: #fff;
+    }
+    .puzzle2-cell.selected { background-color: #cde4ff; }
+    .puzzle2-cell.found {
+      background-color: #8bc34a;
+      color: #fff;
+    }
+    #puzzle2-words span {
+      margin-right: 0.5rem;
+      display: inline-block;
+    }
+    #puzzle2-words span.found {
+      text-decoration: line-through;
+      color: #8bc34a;
+    }
   </style>
 </head>
 <body>
-  <main class="page">
+  <div class="page">
     <header>
-      <div class="small-text">Escape Room de Bolso / Jogo de Investigação Tátil e Dedução Social – Versão Engenharia</div>
       <h1>Projeto Quimera: Dilema do Operativo</h1>
-      <p>Baseline estável para evolução incremental: validação simples, feedback claro e um botão de dica em todos os puzzles.</p>
+      <p class="small-text">
+        Escape Room de Bolso / Jogo de Investigação Tátil e Dedução Social – Versão Engenharia.
+      </p>
     </header>
 
     <section class="summary-bar">
-      <div class="stat"><strong>Cenário ativo</strong><br><span id="cenarioAtualLabel">ALPHA</span></div>
-      <div class="stat"><strong>Puzzles resolvidos</strong><br><span id="progressoLabel">0 / 5</span></div>
-      <div class="stat"><strong>Arquivo classificado</strong><br><span id="arquivoEstadoLabel">Bloqueado</span></div>
+      <div class="stat">
+        <div class="small-text">Cenário ativo</div>
+        <strong id="cenarioAtualLabel">ALPHA</strong>
+        <p class="small-text" id="cenarioInfo">Cenário ALPHA ativo.</p>
+      </div>
+      <div class="stat">
+        <div class="small-text">Puzzles resolvidos</div>
+        <strong id="progressoLabel">0 / 5</strong>
+      </div>
+      <div class="stat">
+        <div class="small-text">Arquivo Classificado</div>
+        <strong id="arquivoEstadoLabel">Bloqueado</strong>
+      </div>
     </section>
 
-    <section id="fase1" class="section">
-      <h2>Fase 1 – Preparação e Dossiês</h2>
-      <p>Os jogadores assumem papéis de cientistas presos no laboratório Quimera após um lockdown de emergência.</p>
+    <section class="section">
       <div class="map-lab">
-        <div class="envelope-title">Mapa Central do Laboratório</div>
-        <p>Áreas-chave: Armazenamento Térmico, Sala de Descontaminação, Zona de Descontaminação, Refeitório, Sala de Reatores e Terminal Central.</p>
-      </div>
-      <div class="card">
-        <h3>Configurar número de jogadores e dossiês</h3>
+        <h2>Fase 1 – Preparação e Dossiês</h2>
+        <p class="small-text">
+          Os jogadores assumem papéis de cientistas presos no laboratório Quimera após um lockdown de emergência.
+        </p>
+        <p class="small-text" style="margin-top: 12px;">
+          Áreas-chave: Armazenamento Térmico, Sala de Descontaminação, Zona de Descontaminação,
+          Refeitório, Sala de Reatores e Terminal Central.
+        </p>
+
+        <h3 style="margin-top: 18px;">Configurar número de jogadores e dossiês</h3>
         <label for="numJogadores">Número de jogadores</label>
         <select id="numJogadores">
           <option value="3">3 jogadores</option>
@@ -202,141 +273,194 @@
           <option value="5">5 jogadores</option>
           <option value="6">6 jogadores</option>
         </select>
-        <button type="button" id="btnGerarDossies">Gerar Dossiês Ocultos</button>
-        <div id="dossiesInfo" class="small-text">Escolhe o número de participantes e gera os papéis ocultos.</div>
+        <button id="btnGerarDossies" type="button">Gerar Dossiês Ocultos</button>
+        <p class="small-text" id="dossiesInfo" style="margin-top: 8px;">
+          Escolhe o número de participantes e gera os papéis ocultos.
+        </p>
+
+        <div id="listaDossies" style="margin-top: 20px; display: grid; gap: 12px;"></div>
       </div>
-      <div id="listaDossies" class="flex-row"></div>
     </section>
 
-    <section id="fase2" class="section">
-      <h2>Fase 2 – Puzzles</h2>
+    <section class="section">
+      <div class="card">
+        <h2>Fase 2 – Puzzles</h2>
 
-      <div id="puzzle1Card" class="card">
-        <div class="envelope-title">Envelope 1 – Filtro de Luz</div>
-        <p class="small-text">Na versão digital, podes deduzir o código pelo micro-puzzle abaixo ou usar a dica.</p>
-        <label for="p1codigo">Código químico revelado</label>
-        <input id="p1codigo" type="text" placeholder="Ex.: Q-17" />
-        <label for="p1setor">Setor do laboratório revelado</label>
-        <select id="p1setor">
-          <option value="">— escolher —</option>
-          <option value="Armazenamento Térmico">Armazenamento Térmico</option>
-          <option value="Zona de Descontaminação">Zona de Descontaminação</option>
-          <option value="Sala de Reatores">Sala de Reatores</option>
-        </select>
-        <div class="card" style="margin-top:12px; background:var(--surface-2); box-shadow:none;">
-          <p class="small-text"><strong>Micro‑puzzle lógico</strong></p>
+        <!-- Envelope 1 -->
+        <div style="margin-top: 24px;">
+          <div class="envelope-title">Envelope 1 – Filtro de Luz</div>
+          <p class="small-text">
+            Na versão digital, podes deduzir o código pelo micro-puzzle abaixo ou usar a dica.
+          </p>
+
+          <label for="p1codigo">Código químico revelado</label>
+          <input id="p1codigo" type="text" placeholder="Ex.: Q-17">
+
+          <label for="p1setor">Setor do laboratório revelado</label>
+          <select id="p1setor">
+            <option value="">— escolher —</option>
+            <option value="Armazenamento Térmico">Armazenamento Térmico</option>
+            <option value="Zona de Descontaminação">Zona de Descontaminação</option>
+            <option value="Sala de Reatores">Sala de Reatores</option>
+          </select>
+
+          <p class="small-text" style="margin-top: 12px;"><strong>Micro‑puzzle lógico</strong></p>
           <ul class="small-text">
             <li>Coluna Vermelha: X-09, Z-23, Q-23</li>
             <li>Coluna Verde: Q-17, Z-09, X-23</li>
             <li>Coluna Azul: Z-17, X-09, Q-17</li>
           </ul>
-          <p class="small-text">A leitura correta é <strong>Q-17</strong> e aponta para <strong>Armazenamento Térmico</strong>.</p>
-        </div>
-        <div class="btn-row">
-          <button type="button" id="btnHint1" class="secondary">Mostrar dica</button>
-          <button type="button" id="btnPuzzle1">Validar Puzzle 1</button>
-        </div>
-        <div id="hint1" class="puzzle-result hidden"></div>
-        <div id="p1Resultado" class="puzzle-result hidden"></div>
-      </div>
+          <p class="small-text" style="margin-top: 6px;">
+            A leitura correta é Q-17 e aponta para Armazenamento Térmico.
+          </p>
 
-      <div id="puzzle2Card" class="card">
-        <div class="envelope-title">Envelope 2 – Cifra de Dobradura</div>
-        <p class="small-text">Aceita frases que mencionem “SISTEMAS” e “03:00”.</p>
-        <label for="p2frase">Frase lida na fita do servidor</label>
-        <textarea id="p2frase" placeholder="Ex.: Sistemas acedeu às 03:00"></textarea>
-        <div class="btn-row">
-          <button type="button" id="btnHint2" class="secondary">Mostrar dica</button>
-          <button type="button" id="btnPuzzle2">Validar Puzzle 2</button>
+          <div class="btn-row">
+            <button id="btnHint1" type="button">Mostrar dica</button>
+            <button id="btnPuzzle1" type="button">Validar Puzzle 1</button>
+          </div>
+          <div id="hint1" class="notif hidden"></div>
+          <div id="p1Resultado" class="puzzle-result hidden"></div>
         </div>
-        <div id="hint2" class="puzzle-result hidden"></div>
-        <div id="p2Resultado" class="puzzle-result hidden"></div>
-      <section id="puzzle2-wordsearch">
-        <h3>Sopa de Letras – Registo de Terminal</h3>
-        <div id="puzzle2-grid"></div>
-        <h4>Palavras a encontrar</h4>
-        <div id="puzzle2-words"></div>
-        <div id="puzzle2-status" class="small-text"></div>
-      </section>
-      </div>
 
-      <div id="puzzle3Card" class="card">
-        <div class="envelope-title">Envelope 3 – Planta Baixa</div>
-        <label for="p3substancia">Substância lida</label>
-        <select id="p3substancia">
-          <option value="">— escolher —</option>
-          <option value="NEUROTOXINA B">NEUROTOXINA B</option>
-          <option value="SOLVENTE C">SOLVENTE C</option>
-        </select>
-        <div class="btn-row">
-          <button type="button" id="btnHint3" class="secondary">Mostrar dica</button>
-          <button type="button" id="btnPuzzle3">Validar Puzzle 3</button>
-        </div>
-        <div id="hint3" class="puzzle-result hidden"></div>
-        <div id="p3Resultado" class="puzzle-result hidden"></div>
-      </div>
+        <!-- Envelope 2 -->
+        <div style="margin-top: 32px;">
+          <div class="envelope-title">Envelope 2 – Cifra de Dobradura</div>
+          <p class="small-text">
+            Aceita frases que mencionem “SISTEMAS” e “03:00”.
+          </p>
 
-      <div id="puzzle4Card" class="card">
-        <div class="envelope-title">Envelope 4 – Criptografia Tátil</div>
-        <label for="p4chave">Função associada à chave física</label>
-        <select id="p4chave">
-          <option value="">— escolher —</option>
-          <option value="Engenheiro de Segurança">Engenheiro de Segurança</option>
-          <option value="Chefe de Bioquímica">Chefe de Bioquímica</option>
-          <option value="Geneticista">Geneticista</option>
-        </select>
-        <div class="btn-row">
-          <button type="button" id="btnHint4" class="secondary">Mostrar dica</button>
-          <button type="button" id="btnPuzzle4">Validar Puzzle 4</button>
-        </div>
-        <div id="hint4" class="puzzle-result hidden"></div>
-        <div id="p4Resultado" class="puzzle-result hidden"></div>
-      </div>
+          <label for="p2frase">Frase lida na fita do servidor</label>
+          <textarea id="p2frase" placeholder="Escreve a frase completa encontrada."></textarea>
 
-      <div id="puzzle5Card" class="card">
-        <div class="envelope-title">Envelope 5 – Análise de Padrão</div>
-        <label for="p5sala">Sala indicada pelo vetor</label>
-        <select id="p5sala">
-          <option value="">— escolher —</option>
-          <option value="Sala de Descontaminação">Sala de Descontaminação</option>
-          <option value="Armazenamento Térmico">Armazenamento Térmico</option>
-          <option value="Sala de Reatores">Sala de Reatores</option>
-        </select>
-        <div class="btn-row">
-          <button type="button" id="btnHint5" class="secondary">Mostrar dica</button>
-          <button type="button" id="btnPuzzle5">Validar Puzzle 5</button>
+          <div class="btn-row">
+            <button id="btnHint2" type="button">Mostrar dica</button>
+            <button id="btnPuzzle2" type="button">Validar Puzzle 2</button>
+          </div>
+          <div id="hint2" class="notif hidden"></div>
+          <div id="p2Resultado" class="puzzle-result hidden"></div>
+
+          <h3 style="margin-top: 24px;">Sopa de Letras – Registo de Terminal</h3>
+          <div id="puzzle2-grid"></div>
+          <h4>Palavras a encontrar</h4>
+          <div id="puzzle2-words" class="small-text" style="margin-top: 8px;"></div>
+          <p class="small-text" id="puzzle2-status" style="margin-top: 8px;">
+            Palavras encontradas: 0 / 24
+          </p>
         </div>
-        <div id="hint5" class="puzzle-result hidden"></div>
-        <div id="p5Resultado" class="puzzle-result hidden"></div>
+
+        <!-- Envelope 3 -->
+        <div style="margin-top: 32px;">
+          <div class="envelope-title">Envelope 3 – Planta Baixa</div>
+          <label for="p3substancia">Substância lida</label>
+          <select id="p3substancia">
+            <option value="">— escolher —</option>
+            <option value="NEUROTOXINA B">NEUROTOXINA B</option>
+            <option value="SOLVENTE C">SOLVENTE C</option>
+          </select>
+
+          <div class="btn-row">
+            <button id="btnHint3" type="button">Mostrar dica</button>
+            <button id="btnPuzzle3" type="button">Validar Puzzle 3</button>
+          </div>
+          <div id="hint3" class="notif hidden"></div>
+          <div id="p3Resultado" class="puzzle-result hidden"></div>
+        </div>
+
+        <!-- Envelope 4 -->
+        <div style="margin-top: 32px;">
+          <div class="envelope-title">Envelope 4 – Criptografia Tátil</div>
+          <label for="p4chave">Função associada à chave física</label>
+          <select id="p4chave">
+            <option value="">— escolher —</option>
+            <option value="Engenheiro de Segurança">Engenheiro de Segurança</option>
+            <option value="Chefe de Bioquímica">Chefe de Bioquímica</option>
+            <option value="Geneticista">Geneticista</option>
+          </select>
+
+          <div class="btn-row">
+            <button id="btnHint4" type="button">Mostrar dica</button>
+            <button id="btnPuzzle4" type="button">Validar Puzzle 4</button>
+          </div>
+          <div id="hint4" class="notif hidden"></div>
+          <div id="p4Resultado" class="puzzle-result hidden"></div>
+        </div>
+
+        <!-- Envelope 5 -->
+        <div style="margin-top: 32px;">
+          <div class="envelope-title">Envelope 5 – Análise de Padrão</div>
+          <label for="p5sala">Sala indicada pelo vetor</label>
+          <select id="p5sala">
+            <option value="">— escolher —</option>
+            <option value="Sala de Descontaminação">Sala de Descontaminação</option>
+            <option value="Armazenamento Térmico">Armazenamento Térmico</option>
+            <option value="Sala de Reatores">Sala de Reatores</option>
+          </select>
+
+          <div class="btn-row">
+            <button id="btnHint5" type="button">Mostrar dica</button>
+            <button id="btnPuzzle5" type="button">Validar Puzzle 5</button>
+          </div>
+          <div id="hint5" class="notif hidden"></div>
+          <div id="p5Resultado" class="puzzle-result hidden"></div>
+        </div>
       </div>
     </section>
 
-    <section id="fase3" class="section">
-      <h2>Fase 3 – Arquivo Classificado</h2>
+    <section class="section">
       <div class="card">
-        <button type="button" id="btnAbrirArquivo" disabled>Abrir Arquivo Classificado</button>
+        <h2>Fase 3 – Arquivo Classificado</h2>
+        <button id="btnAbrirArquivo" type="button" disabled>Abrir Arquivo Classificado</button>
         <div id="arquivoFeedback" class="notif hidden"></div>
-        <div id="arquivoConteudo" class="hidden">
+
+        <div id="arquivoConteudo" class="hidden" style="margin-top: 16px;">
           <table>
             <thead>
-              <tr><th>Categoria</th><th>Pista</th><th>Significado</th></tr>
+              <tr>
+                <th>Categoria</th>
+                <th>Pista</th>
+                <th>Significado</th>
+              </tr>
             </thead>
             <tbody>
-              <tr><td>Origem</td><td id="gridOrigem">Armazenamento Térmico</td><td>A amostra original foi retirada do frigorífico central.</td></tr>
-              <tr><td>Log</td><td id="gridLog">Arquiteto de Sistemas / 03:00</td><td>Os logs apontam para atividade no terminal.</td></tr>
-              <tr><td>Agente</td><td id="gridAgente">Neurotoxina B</td><td>A substância ativa identificada não é um vírus tradicional.</td></tr>
-              <tr><td>Chave</td><td id="gridChave">Engenheiro de Segurança</td><td>A credencial usada foi desviada.</td></tr>
-              <tr><td>Alvo</td><td id="gridAlvo">Sala de Descontaminação</td><td>O mecanismo foi preparado para esse compartimento.</td></tr>
+              <tr>
+                <td>Origem</td>
+                <td id="gridOrigem">Armazenamento Térmico</td>
+                <td>A amostra original foi retirada do frigorífico central.</td>
+              </tr>
+              <tr>
+                <td>Log</td>
+                <td id="gridLog">Arquiteto de Sistemas / 03:00</td>
+                <td>Os logs apontam para atividade no terminal.</td>
+              </tr>
+              <tr>
+                <td>Agente</td>
+                <td id="gridAgente">Neurotoxina B</td>
+                <td>A substância ativa identificada não é um vírus tradicional.</td>
+              </tr>
+              <tr>
+                <td>Chave</td>
+                <td id="gridChave">Engenheiro de Segurança</td>
+                <td>A credencial usada foi desviada.</td>
+              </tr>
+              <tr>
+                <td>Alvo</td>
+                <td id="gridAlvo">Sala de Descontaminação</td>
+                <td>O mecanismo foi preparado para esse compartimento.</td>
+              </tr>
             </tbody>
           </table>
-          <p class="small-text" id="arquivoNota">Dossiê do Engenheiro: “Perdi o meu cartão às 02:30 no refeitório.”</p>
+
+          <p class="small-text" style="margin-top: 12px;">
+            Dossiê do Engenheiro: “Perdi o meu cartão às 02:30 no refeitório.”
+          </p>
         </div>
       </div>
     </section>
 
-    <section id="fase4" class="section">
-      <h2>Fase 4 – Acusação Final</h2>
+    <section class="section">
       <div class="card">
+        <h2>Fase 4 – Acusação Final</h2>
+
         <label for="acusadoNome">Suspeito</label>
         <select id="acusadoNome">
           <option value="">— escolher —</option>
@@ -348,6 +472,7 @@
           <option value="Diretor do Lab">Diretor do Lab</option>
           <option value="Nenhum">Nenhum</option>
         </select>
+
         <label for="acusadoLocal">Local</label>
         <select id="acusadoLocal">
           <option value="">— escolher —</option>
@@ -355,6 +480,7 @@
           <option value="Armazenamento Térmico">Armazenamento Térmico</option>
           <option value="Sala de Reatores">Sala de Reatores</option>
         </select>
+
         <label for="acusadoSubstancia">Substância</label>
         <select id="acusadoSubstancia">
           <option value="">— escolher —</option>
@@ -362,42 +488,76 @@
           <option value="SOLVENTE C">SOLVENTE C</option>
           <option value="Quimera-X">Quimera-X</option>
         </select>
-        <button type="button" id="btnVerificarAcusacao">Verificar Teoria Final</button>
+
+        <button id="btnVerificarAcusacao" type="button" style="margin-top: 16px;">
+          Verificar Teoria Final
+        </button>
         <div id="acusacaoResultado" class="puzzle-result hidden"></div>
       </div>
     </section>
 
-    <section id="cenarios" class="section">
-      <h2>Cenários</h2>
-      <div class="flex-row">
-        <div class="card scenario-card scenario-active" data-cenario="ALPHA">
-          <div class="envelope-title">ALPHA</div>
-          <p class="small-text">Culpado: Arquiteto de Sistemas. Substância: Neurotoxina B. Local: Sala de Descontaminação.</p>
-          <button type="button" id="btnAlpha">Ativar ALPHA</button>
-        </div>
-        <div class="card scenario-card" data-cenario="BETA">
-          <div class="envelope-title">BETA</div>
-          <p class="small-text">Culpado: Geneticista. Substância: Solvente C. Local: Armazenamento Térmico.</p>
-          <button type="button" id="btnBeta">Ativar BETA</button>
-        </div>
-        <div class="card scenario-card" data-cenario="GAMMA">
-          <div class="envelope-title">GAMMA</div>
-          <p class="small-text">Culpado: Nenhum. Substância: Neurotoxina B. Local: Sala de Reatores.</p>
-          <button type="button" id="btnGamma">Ativar GAMMA</button>
+    <section class="section">
+      <div class="card">
+        <h2>Cenários</h2>
+        <div class="flex-row">
+          <div class="scenario-card scenario-active" data-cenario="ALPHA">
+            <h3>ALPHA</h3>
+            <p class="small-text">
+              Culpado: Arquiteto de Sistemas. Substância: Neurotoxina B. Local: Sala de Descontaminação.
+            </p>
+            <button id="btnAlpha" type="button">Ativar ALPHA</button>
+          </div>
+          <div class="scenario-card" data-cenario="BETA">
+            <h3>BETA</h3>
+            <p class="small-text">
+              Culpado: Geneticista. Substância: Solvente C. Local: Armazenamento Térmico.
+            </p>
+            <button id="btnBeta" type="button">Ativar BETA</button>
+          </div>
+          <div class="scenario-card" data-cenario="GAMMA">
+            <h3>GAMMA</h3>
+            <p class="small-text">
+              Culpado: Nenhum. Substância: Neurotoxina B. Local: Sala de Reatores.
+            </p>
+            <button id="btnGamma" type="button">Ativar GAMMA</button>
+          </div>
         </div>
       </div>
-      <div id="cenarioInfo" class="notif">Cenário ALPHA ativo.</div>
     </section>
-  </main>
+  </div>
 
   <script>
     const rolesBase = [
-      { role: 'Arquiteto de Sistemas', affiliation: 'Sabotador', clue: 'Conheces os horários do terminal e sabes como alterar logs sem disparar o alarme.' },
-      { role: 'Engenheiro de Segurança', affiliation: 'Leal', clue: 'Perdeste o teu cartão de acesso às 02:30 no refeitório.' },
-      { role: 'Chefe de Bioquímica', affiliation: 'Leal', clue: 'Sabes que a substância ativa não era um vírus comum e exigia armazenamento controlado.' },
-      { role: 'Geneticista', affiliation: 'Leal', clue: 'Viste alguém próximo do arquivo de amostras antes do lockdown.' },
-      { role: 'Perito de Vantagem', affiliation: 'Oportunista', clue: 'Tentas sobreviver e negociar informação sem revelar tudo o que observaste.' },
-      { role: 'Diretor do Lab', affiliation: 'Leal', clue: 'Tens acesso parcial à cronologia de incidentes, mas faltam-te dados do turno noturno.' }
+      {
+        role: 'Arquiteto de Sistemas',
+        affiliation: 'Sabotador',
+        clue: 'Conheces os horários do terminal e sabes como alterar logs sem disparar o alarme.'
+      },
+      {
+        role: 'Engenheiro de Segurança',
+        affiliation: 'Leal',
+        clue: 'Perdeste o teu cartão de acesso às 02:30 no refeitório.'
+      },
+      {
+        role: 'Chefe de Bioquímica',
+        affiliation: 'Leal',
+        clue: 'Sabes que a substância ativa não era um vírus comum e exigia armazenamento controlado.'
+      },
+      {
+        role: 'Geneticista',
+        affiliation: 'Leal',
+        clue: 'Viste alguém próximo do arquivo de amostras antes do lockdown.'
+      },
+      {
+        role: 'Perito de Vantagem',
+        affiliation: 'Oportunista',
+        clue: 'Tentas sobreviver e negociar informação sem revelar tudo o que observaste.'
+      },
+      {
+        role: 'Diretor do Lab',
+        affiliation: 'Leal',
+        clue: 'Tens acesso parcial à cronologia de incidentes, mas faltam-te dados do turno noturno.'
+      }
     ];
 
     const scenarios = {
@@ -471,11 +631,18 @@
       const el = $(id);
       el.textContent = text;
       el.classList.remove('hidden', 'success-state', 'error-state', 'warn-state');
-      el.classList.add(type === 'success' ? 'success-state' : type === 'error' ? 'error-state' : 'warn-state');
+      el.classList.add(
+        type === 'success'
+          ? 'success-state'
+          : type === 'error'
+          ? 'error-state'
+          : 'warn-state'
+      );
     }
 
     function clearBox(id) {
       const el = $(id);
+      if (!el) return;
       el.textContent = '';
       el.classList.add('hidden');
       el.classList.remove('success-state', 'error-state', 'warn-state');
@@ -519,7 +686,11 @@
 
     function resetProgress() {
       state.solved = { p1: false, p2: false, p3: false, p4: false, p5: false };
-      ['hint1','hint2','hint3','hint4','hint5','p1Resultado','p2Resultado','p3Resultado','p4Resultado','p5Resultado','acusacaoResultado','arquivoFeedback'].forEach(clearBox);
+      [
+        'hint1','hint2','hint3','hint4','hint5',
+        'p1Resultado','p2Resultado','p3Resultado','p4Resultado','p5Resultado',
+        'acusacaoResultado','arquivoFeedback'
+      ].forEach(clearBox);
       $('arquivoConteudo').classList.add('hidden');
       updateSummary();
       refreshGrid();
@@ -554,7 +725,11 @@
       const sector = $('p1setor').value;
       const ok = code === normalize(s.p1code) && sector === s.p1sector;
       state.solved.p1 = ok;
-      setMessage('p1Resultado', ok ? 'Puzzle 1 correto.' : 'Puzzle 1 incorreto. Tenta outra vez ou usa a dica.', ok ? 'success' : 'error');
+      setMessage(
+        'p1Resultado',
+        ok ? 'Puzzle 1 correto.' : 'Puzzle 1 incorreto. Tenta outra vez ou usa a dica.',
+        ok ? 'success' : 'error'
+      );
       updateSummary();
     }
 
@@ -562,7 +737,13 @@
       const phrase = normalize($('p2frase').value);
       const ok = phrase.includes('SISTEMAS') && phrase.includes('03:00');
       state.solved.p2 = ok;
-      setMessage('p2Resultado', ok ? 'Puzzle 2 correto.' : 'Puzzle 2 incorreto. A frase deve incluir “SISTEMAS” e “03:00”.', ok ? 'success' : 'error');
+      setMessage(
+        'p2Resultado',
+        ok
+          ? 'Puzzle 2 correto.'
+          : 'Puzzle 2 incorreto. A frase deve incluir “SISTEMAS” e “03:00”.',
+        ok ? 'success' : 'error'
+      );
       updateSummary();
     }
 
@@ -570,7 +751,11 @@
       const s = currentScenario();
       const ok = $('p3substancia').value === s.p3;
       state.solved.p3 = ok;
-      setMessage('p3Resultado', ok ? 'Puzzle 3 correto.' : 'Puzzle 3 incorreto. Consulta a dica do cenário ativo.', ok ? 'success' : 'error');
+      setMessage(
+        'p3Resultado',
+        ok ? 'Puzzle 3 correto.' : 'Puzzle 3 incorreto. Consulta a dica do cenário ativo.',
+        ok ? 'success' : 'error'
+      );
       refreshGrid();
       updateSummary();
     }
@@ -579,7 +764,11 @@
       const s = currentScenario();
       const ok = $('p4chave').value === s.p4;
       state.solved.p4 = ok;
-      setMessage('p4Resultado', ok ? 'Puzzle 4 correto.' : 'Puzzle 4 incorreto. Consulta a dica do cenário ativo.', ok ? 'success' : 'error');
+      setMessage(
+        'p4Resultado',
+        ok ? 'Puzzle 4 correto.' : 'Puzzle 4 incorreto. Consulta a dica do cenário ativo.',
+        ok ? 'success' : 'error'
+      );
       refreshGrid();
       updateSummary();
     }
@@ -588,7 +777,11 @@
       const s = currentScenario();
       const ok = $('p5sala').value === s.p5;
       state.solved.p5 = ok;
-      setMessage('p5Resultado', ok ? 'Puzzle 5 correto.' : 'Puzzle 5 incorreto. Consulta a dica do cenário ativo.', ok ? 'success' : 'error');
+      setMessage(
+        'p5Resultado',
+        ok ? 'Puzzle 5 correto.' : 'Puzzle 5 incorreto. Consulta a dica do cenário ativo.',
+        ok ? 'success' : 'error'
+      );
       refreshGrid();
       updateSummary();
     }
@@ -600,8 +793,17 @@
 
     function verifyAccusation() {
       const s = currentScenario();
-      const ok = $('acusadoNome').value === s.culprit && $('acusadoLocal').value === s.location && $('acusadoSubstancia').value === s.substance;
-      setMessage('acusacaoResultado', ok ? 'Teoria final correta.' : 'Teoria final incorreta. Reavalia as pistas do arquivo e dos puzzles.', ok ? 'success' : 'error');
+      const ok =
+        $('acusadoNome').value === s.culprit &&
+        $('acusadoLocal').value === s.location &&
+        $('acusadoSubstancia').value === s.substance;
+      setMessage(
+        'acusacaoResultado',
+        ok
+          ? 'Teoria final correta.'
+          : 'Teoria final incorreta. Reavalia as pistas do arquivo e dos puzzles.',
+        ok ? 'success' : 'error'
+      );
     }
 
     function activateScenario(name) {
@@ -612,132 +814,125 @@
       resetProgress();
     }
 
+    // Ligações de eventos
     $('btnGerarDossies').addEventListener('click', generateDossiers);
     $('btnHint1').addEventListener('click', () => showHint('p1', 'hint1'));
     $('btnHint2').addEventListener('click', () => showHint('p2', 'hint2'));
     $('btnHint3').addEventListener('click', () => showHint('p3', 'hint3'));
     $('btnHint4').addEventListener('click', () => showHint('p4', 'hint4'));
     $('btnHint5').addEventListener('click', () => showHint('p5', 'hint5'));
+
     $('btnPuzzle1').addEventListener('click', validatePuzzle1);
     $('btnPuzzle2').addEventListener('click', validatePuzzle2);
     $('btnPuzzle3').addEventListener('click', validatePuzzle3);
     $('btnPuzzle4').addEventListener('click', validatePuzzle4);
     $('btnPuzzle5').addEventListener('click', validatePuzzle5);
+
     $('btnAbrirArquivo').addEventListener('click', openArquivo);
     $('btnVerificarAcusacao').addEventListener('click', verifyAccusation);
+
     $('btnAlpha').addEventListener('click', () => activateScenario('ALPHA'));
     $('btnBeta').addEventListener('click', () => activateScenario('BETA'));
     $('btnGamma').addEventListener('click', () => activateScenario('GAMMA'));
 
+    // Dados da sopa de letras
+    const puzzle2Data = {
+      grid: [
+        ["E","S","T","E","R","M","I","N","A","L","U","Y","X","Y","E","Q","A","A","M","E","T","S","I","S","G","U","P","O","X","V","D","A"],
+        ["P","E","R","M","I","S","S","Ã","O","L","E","E","A","U","T","O","R","I","Z","A","Ç","Ã","O","B","C","P","R","C","R","R","K","G"],
+        ["I","M","Ç","G","O","M","O","R","T","R","U","O","A","E","Ê","A","I","T","N","K","N","I","N","0","O","A","D","S","P","N","N","S"],
+        ["I","R","T","O","E","C","3","E","Ç","I","O","E","C","Q","C","F","R","R","F","U","R","0","C","Ã","V","P","C","I","L","R","O","I"],
+        ["A","M","Q","E","0","E","O","R","O","L","A","V","L","D","L","T","T","O","T","P","A","C","E","R","H","Z","O","A","H","N","L","P"],
+        ["L","R","E","G","I","S","T","O","E","D","A","D","I","L","I","B","I","S","S","E","C","A","L","E","N","I","A","P","K","A","C","E"],
+        ["S","S","O","U","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]
+      ],
+      words: [
+        "ACESSIBILIDADE","ANTECIPAÇÃO","AUTORIZAÇÃO","PRIORIDADE","BLOQUEIO","EMERGÊNCIA",
+        "EVACUAÇÃO","PERMISSÃO","CONTROLO","TERMINAL","ENTRADA","SERVIDOR","REGISTO",
+        "EVENTO","SISTEMA","PAINEL","FALHA","LOGIN","03:00","ATRASO","ERRO","PORTA",
+        "REDE","ACESSOU"
+      ]
+    };
+
+    (function() {
+      const gridElem = document.getElementById('puzzle2-grid');
+      const wordsElem = document.getElementById('puzzle2-words');
+      const statusElem = document.getElementById('puzzle2-status');
+      if (!gridElem || !wordsElem || !statusElem || !puzzle2Data) return;
+
+      const rows = puzzle2Data.grid.length;
+      const cols = puzzle2Data.grid[0].length;
+      let selectedCells = [];
+      let foundWords = new Set();
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const ch = puzzle2Data.grid[r][c] || ' ';
+          const cell = document.createElement('div');
+          cell.className = 'puzzle2-cell';
+          cell.textContent = ch;
+          cell.dataset.row = r;
+          cell.dataset.col = c;
+          cell.addEventListener('click', onCellClick);
+          gridElem.appendChild(cell);
+        }
+      }
+
+      puzzle2Data.words.forEach(w => {
+        const span = document.createElement('span');
+        span.textContent = w;
+        span.id = 'puzzle2-word-' + w;
+        wordsElem.appendChild(span);
+      });
+
+      updateStatus();
+
+      function onCellClick(e) {
+        const cell = e.currentTarget;
+        const row = parseInt(cell.dataset.row, 10);
+        const col = parseInt(cell.dataset.col, 10);
+        if (!cell.textContent.trim()) return;
+        const idx = selectedCells.findIndex(c => c.row === row && c.col === col);
+        if (idx >= 0) {
+          selectedCells.splice(idx, 1);
+          cell.classList.remove('selected');
+        } else {
+          selectedCells.push({ row, col, elem: cell });
+          cell.classList.add('selected');
+        }
+        checkSelection();
+      }
+
+      function checkSelection() {
+        if (selectedCells.length === 0) return;
+        const ordered = selectedCells.slice().sort((a, b) => {
+          if (a.row === b.row) return a.col - b.col;
+          return a.row - b.row;
+        });
+        const text = ordered.map(c => puzzle2Data.grid[c.row][c.col]).join('');
+        puzzle2Data.words.forEach(word => {
+          if (text === word && !foundWords.has(word)) {
+            foundWords.add(word);
+            ordered.forEach(c => c.elem.classList.add('found'));
+            const span = document.getElementById('puzzle2-word-' + word);
+            if (span) span.classList.add('found');
+            selectedCells.forEach(c => c.elem.classList.remove('selected'));
+            selectedCells = [];
+            updateStatus();
+          }
+        });
+      }
+
+      function updateStatus() {
+        statusElem.textContent =
+          `Palavras encontradas: ${foundWords.size} / ${puzzle2Data.words.length}`;
+      }
+    })();
+
+    // Inicialização
     generateDossiers();
     refreshGrid();
     updateSummary();
   </script>
-<script>
-const puzzle2Data = {
-  grid: [
-    ["E","S","T","E","R","M","I","N","A","L","U","Y","X","Y","E","Q","A","A","M","E","T","S","I","S","G","U","P","O","X","V","D","A"],
-    ["P","E","R","M","I","S","S","Ã","O","L","E","E","A","U","T","O","R","I","Z","A","Ç","Ã","O","B","C","P","R","C","R","R","K","G"],
-    ["I","M","Ç","G","O","M","O","R","T","R","U","O","A","E","Ê","A","I","T","N","K","N","I","N","0","O","A","D","S","P","N","N","S"],
-    ["I","R","T","O","E","C","3","E","Ç","I","O","E","C","Q","C","F","R","R","F","U","R","0","C","Ã","V","P","C","I","L","R","O","I"],
-    ["A","M","Q","E","0","E","O","R","O","L","A","V","L","D","L","T","T","O","T","P","A","C","E","R","H","Z","O","A","H","N","L","P"],
-    ["L","R","E","G","I","S","T","O","E","D","A","D","I","L","I","B","I","S","S","E","C","A","L","E","N","I","A","P","K","A","C","E"],
-    ["S","S","O","U","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]
-  ],
-  words: [
-    "ACESSIBILIDADE","ANTECIPAÇÃO","AUTORIZAÇÃO","PRIORIDADE","BLOQUEIO","EMERGÊNCIA",
-    "EVACUAÇÃO","PERMISSÃO","CONTROLO","TERMINAL","ENTRADA","SERVIDOR","REGISTO",
-    "EVENTO","SISTEMA","PAINEL","FALHA","LOGIN","03:00","ATRASO","ERRO","PORTA","REDE","ACESSOU"
-  ]
-};
-</script>
-<script>
-(function() {
-  const gridElem   = document.getElementById('puzzle2-grid');
-  const wordsElem  = document.getElementById('puzzle2-words');
-  const statusElem = document.getElementById('puzzle2-status');
-
-  if (!gridElem || !wordsElem || !statusElem || !window.puzzle2Data) return;
-
-  const rows = puzzle2Data.grid.length;
-  const cols = puzzle2Data.grid[0].length;
-
-  let selectedCells = [];
-  let foundWords    = new Set();
-
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      const ch = puzzle2Data.grid[r][c] || ' ';
-      const cell = document.createElement('div');
-      cell.className = 'puzzle2-cell';
-      cell.textContent = ch;
-      cell.dataset.row = r;
-      cell.dataset.col = c;
-      cell.addEventListener('click', onCellClick);
-      gridElem.appendChild(cell);
-    }
-  }
-
-  puzzle2Data.words.forEach(w => {
-    const span = document.createElement('span');
-    span.textContent = w;
-    span.id = 'puzzle2-word-' + w;
-    wordsElem.appendChild(span);
-  });
-
-  updateStatus();
-
-  function onCellClick(e) {
-    const cell = e.currentTarget;
-    const row  = parseInt(cell.dataset.row, 10);
-    const col  = parseInt(cell.dataset.col, 10);
-
-    if (!cell.textContent.trim()) return;
-
-    const idx = selectedCells.findIndex(c => c.row === row && c.col === col);
-    if (idx >= 0) {
-      selectedCells.splice(idx, 1);
-      cell.classList.remove('selected');
-    } else {
-      selectedCells.push({ row, col, elem: cell });
-      cell.classList.add('selected');
-    }
-
-    checkSelection();
-  }
-
-  function checkSelection() {
-    if (selectedCells.length === 0) return;
-
-    const ordered = selectedCells.slice().sort((a, b) => {
-      if (a.row === b.row) return a.col - b.col;
-      return a.row - b.row;
-    });
-
-    const text = ordered.map(c => puzzle2Data.grid[c.row][c.col]).join('');
-
-    puzzle2Data.words.forEach(word => {
-      if (text === word && !foundWords.has(word)) {
-        foundWords.add(word);
-
-        ordered.forEach(c => c.elem.classList.add('found'));
-
-        const span = document.getElementById('puzzle2-word-' + word);
-        if (span) span.classList.add('found');
-
-        selectedCells.forEach(c => c.elem.classList.remove('selected'));
-        selectedCells = [];
-
-        updateStatus();
-      }
-    });
-  }
-
-  function updateStatus() {
-    statusElem.textContent = `Palavras encontradas: ${foundWords.size} / ${puzzle2Data.words.length}`;
-  }
-})();
-</script>
-
 </body>
 </html>
