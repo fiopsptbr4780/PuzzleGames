@@ -219,13 +219,30 @@
       background-color: #8bc34a;
       color: #fff;
     }
+    .puzzle2-cell.found-key {
+      background-color: #ff6b6b;
+      color: #fff;
+      font-weight: bold;
+    }
     #puzzle2-words span {
       margin-right: 0.5rem;
       display: inline-block;
+      padding: 0.35rem 0.7rem;
+      border-radius: 8px;
+      background: #f0f0f0;
+      transition: all 0.3s ease;
     }
     #puzzle2-words span.found {
       text-decoration: line-through;
-      color: #8bc34a;
+      color: #666;
+      background: rgba(139, 195, 74, 0.2);
+    }
+    #puzzle2-words span.found-key {
+      text-decoration: none;
+      color: #fff;
+      background: #ff6b6b;
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
     }
   </style>
 </head>
@@ -340,11 +357,17 @@
           <div id="p2Resultado" class="puzzle-result hidden"></div>
 
           <h3 style="margin-top: 24px;">Sopa de Letras – Registo de Terminal</h3>
+          <p class="small-text" style="margin-bottom: 12px;">
+            <strong>Palavras chave:</strong> encontra SISTEMA, 03:00 e ACESSOU para completar o puzzle.
+          </p>
           <div id="puzzle2-grid"></div>
           <h4>Palavras a encontrar</h4>
           <div id="puzzle2-words" class="small-text" style="margin-top: 8px;"></div>
           <p class="small-text" id="puzzle2-status" style="margin-top: 8px;">
             Palavras encontradas: 0 / 24
+          </p>
+          <p class="small-text" id="puzzle2-key-status" style="margin-top: 8px; color: #ff6b6b; font-weight: bold;">
+            Palavras chave encontradas: 0 / 3
           </p>
         </div>
 
@@ -835,35 +858,43 @@
     $('btnBeta').addEventListener('click', () => activateScenario('BETA'));
     $('btnGamma').addEventListener('click', () => activateScenario('GAMMA'));
 
-    // Dados da sopa de letras
+    // Dados da sopa de letras - Palavras chave: SISTEMA, 03:00, ACESSOU
     const puzzle2Data = {
       grid: [
-        ["E","S","T","E","R","M","I","N","A","L","U","Y","X","Y","E","Q","A","A","M","E","T","S","I","S","G","U","P","O","X","V","D","A"],
-        ["P","E","R","M","I","S","S","Ã","O","L","E","E","A","U","T","O","R","I","Z","A","Ç","Ã","O","B","C","P","R","C","R","R","K","G"],
-        ["I","M","Ç","G","O","M","O","R","T","R","U","O","A","E","Ê","A","I","T","N","K","N","I","N","0","O","A","D","S","P","N","N","S"],
-        ["I","R","T","O","E","C","3","E","Ç","I","O","E","C","Q","C","F","R","R","F","U","R","0","C","Ã","V","P","C","I","L","R","O","I"],
-        ["A","M","Q","E","0","E","O","R","O","L","A","V","L","D","L","T","T","O","T","P","A","C","E","R","H","Z","O","A","H","N","L","P"],
-        ["L","R","E","G","I","S","T","O","E","D","A","D","I","L","I","B","I","S","S","E","C","A","L","E","N","I","A","P","K","A","C","E"],
-        ["S","S","O","U","E","V","A","C","U","A","Ç","Ã","O","C","O","N","T","R","O","L","O","E","R","R","O","A","T","R","A","S","O","L"]
+        ["T","E","R","M","I","N","A","L","U","Y","X","Y","E","Q","A","A","M","E","T","S"],
+        ["P","E","R","M","I","S","S","A","O","L","E","E","A","U","T","O","R","I","Z","A"],
+        ["I","M","C","G","O","M","O","R","T","R","U","O","A","E","E","A","I","T","N","K"],
+        ["I","R","T","O","E","C","T","E","C","I","O","E","C","Q","C","F","R","R","F","U"],
+        ["A","M","Q","E","A","E","O","R","O","L","A","V","L","D","L","T","T","O","T","P"],
+        ["L","R","E","G","I","S","T","O","E","D","A","D","I","L","I","B","I","S","S","E"],
+        ["S","I","S","T","E","M","A","C","U","A","C","A","O","C","O","N","T","R","O","L"],
+        ["E","V","A","C","U","A","C","A","O","P","A","N","E","L","E","R","R","O","A","T"],
+        ["E","N","T","R","A","D","A","S","E","R","V","I","D","O","R","R","E","G","I","S"],
+        ["E","V","E","N","T","O","S","E","R","V","I","D","O","R","B","L","O","Q","U","E"],
+        ["A","T","R","A","S","O","E","R","R","O","P","O","R","T","A","R","E","D","E","L"],
+        ["A","C","E","S","S","O","U","F","A","L","H","A","L","O","G","I","N","E","N","T"]
       ],
       words: [
-        "ACESSIBILIDADE","ANTECIPAÇÃO","AUTORIZAÇÃO","PRIORIDADE","BLOQUEIO","EMERGÊNCIA",
-        "EVACUAÇÃO","PERMISSÃO","CONTROLO","TERMINAL","ENTRADA","SERVIDOR","REGISTO",
-        "EVENTO","SISTEMA","PAINEL","FALHA","LOGIN","03:00","ATRASO","ERRO","PORTA",
-        "REDE","ACESSOU"
-      ]
+        "TERMINAL","PERMISSAO","AUTORIZACAO","CONTROLO","ENTRADA","SERVIDOR",
+        "REGISTO","EVENTO","SISTEMA","PAINEL","FALHA","LOGIN","ATRASO","ERRO",
+        "PORTA","REDE","BLOQUEIO","EMERGENCIA","EVACUACAO","ACESSOU",
+        "ACESSIBILIDADE","ANTECIPACAO","PRIORIDADE","0300"
+      ],
+      keyWords: ["SISTEMA","0300","ACESSOU"]
     };
 
     (function() {
       const gridElem = document.getElementById('puzzle2-grid');
       const wordsElem = document.getElementById('puzzle2-words');
       const statusElem = document.getElementById('puzzle2-status');
+      const keyStatusElem = document.getElementById('puzzle2-key-status');
       if (!gridElem || !wordsElem || !statusElem || !puzzle2Data) return;
 
       const rows = puzzle2Data.grid.length;
       const cols = puzzle2Data.grid[0].length;
       let selectedCells = [];
       let foundWords = new Set();
+      let foundKeyWords = new Set();
 
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
@@ -882,6 +913,7 @@
         const span = document.createElement('span');
         span.textContent = w;
         span.id = 'puzzle2-word-' + w;
+        span.dataset.iskey = puzzle2Data.keyWords.includes(w) ? 'true' : 'false';
         wordsElem.appendChild(span);
       });
 
@@ -913,9 +945,20 @@
         puzzle2Data.words.forEach(word => {
           if (text === word && !foundWords.has(word)) {
             foundWords.add(word);
-            ordered.forEach(c => c.elem.classList.add('found'));
+            const isKeyWord = puzzle2Data.keyWords.includes(word);
+            
+            if (isKeyWord) {
+              foundKeyWords.add(word);
+              ordered.forEach(c => c.elem.classList.add('found-key'));
+            } else {
+              ordered.forEach(c => c.elem.classList.add('found'));
+            }
+            
             const span = document.getElementById('puzzle2-word-' + word);
-            if (span) span.classList.add('found');
+            if (span) {
+              span.classList.add(isKeyWord ? 'found-key' : 'found');
+            }
+            
             selectedCells.forEach(c => c.elem.classList.remove('selected'));
             selectedCells = [];
             updateStatus();
@@ -926,6 +969,8 @@
       function updateStatus() {
         statusElem.textContent =
           `Palavras encontradas: ${foundWords.size} / ${puzzle2Data.words.length}`;
+        keyStatusElem.textContent =
+          `Palavras chave encontradas: ${foundKeyWords.size} / ${puzzle2Data.keyWords.length}`;
       }
     })();
 
