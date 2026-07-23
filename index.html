@@ -235,6 +235,7 @@
       overflow: hidden;
       border-radius: var(--radius);
       background: linear-gradient(135deg, #f5f2ec 0%, #f1ece4 100%);
+      margin: 20px 0;
     }
     .coverflow-wrapper {
       position: relative;
@@ -246,16 +247,21 @@
     }
     .character-card {
       position: absolute;
-      width: 300px;
-      height: 400px;
+      width: 280px;
+      height: 380px;
       background: white;
       border-radius: 16px;
       box-shadow: 0 10px 40px rgba(0,0,0,0.15);
       cursor: pointer;
-      transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s;
       transform-style: preserve-3d;
       overflow: hidden;
       border: 2px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+    .character-card:hover {
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
     }
     .character-card.active {
       z-index: 10;
@@ -263,34 +269,62 @@
     }
     .character-avatar {
       width: 100%;
-      height: 200px;
+      height: 180px;
       background: linear-gradient(135deg, var(--primary), var(--primary-hover));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 80px;
+      font-size: 70px;
+      flex-shrink: 0;
     }
     .character-info {
-      padding: 20px;
+      padding: 16px;
       text-align: center;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .character-info h3 {
-      font-size: 18px;
-      margin-bottom: 8px;
+      font-size: 16px;
+      margin-bottom: 6px;
+      line-height: 1.2;
     }
     .character-info p {
-      font-size: 14px;
+      font-size: 12px;
       color: var(--muted);
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
     .character-role {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       color: var(--primary);
       background: rgba(11, 107, 111, 0.1);
-      padding: 6px 12px;
-      border-radius: 20px;
+      padding: 4px 8px;
+      border-radius: 12px;
       display: inline-block;
+    }
+
+    /* Controles Coverflow */
+    .coverflow-controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .coverflow-nav-btn {
+      width: auto;
+      padding: 10px 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .coverflow-nav-btn:hover {
+      background: var(--primary-hover);
     }
 
     /* Modo Clássico - Lista */
@@ -380,6 +414,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
     .modal-title {
       flex: 1;
@@ -528,18 +563,18 @@
         <div id="mode-3d" class="game-stage" style="display: none;">
           <h3 style="margin-top: 18px;">Galeria de Personagens</h3>
           <p class="small-text">
-            Clique nos personagens para conhecê-los. A afiliação será revelada apenas no final do jogo.
+            Clique nos personagens para conhecê-los. Use os botões para navegar. A afiliação será revelada apenas no final do jogo.
           </p>
           <div id="coverflow-container">
             <div class="coverflow-wrapper" id="coverflowWrapper"></div>
           </div>
-          <div style="text-align: center; margin-top: 20px;">
+          <div class="coverflow-controls">
+            <button class="coverflow-nav-btn" id="btnPrev">← Anterior</button>
+            <button class="coverflow-nav-btn" id="btnNext">Próximo →</button>
+          </div>
+          <div style="text-align: center; margin-top: 10px;">
             <p class="small-text" id="character-hint">Clique nos cartões para explorar</p>
           </div>
-          
-          <!-- Objetivos 3D -->
-          <h3 style="margin-top: 24px;">Seus Objetivos</h3>
-          <div class="objectives-grid" id="objectivesGrid"></div>
         </div>
       </div>
     </section>
@@ -970,37 +1005,49 @@
           <div class="character-info">
             <h3>${role.role}</h3>
             <p>${role.objective}</p>
-            <div class="character-role">Clique para ver dossiê</div>
+            <div class="character-role">Click para ver dossiê</div>
           </div>
         `;
         card.addEventListener('click', () => showDossierModal(i));
         wrapper.appendChild(card);
       });
 
-      updateCoverflowLayout(n);
+      updateCoverflowLayout();
     }
 
-    function updateCoverflowLayout(n) {
+    function updateCoverflowLayout() {
       const cards = document.querySelectorAll('.character-card');
+      const n = cards.length;
       const active = state.activeCharacter;
-      const perspective = 1600;
-      const scale = 0.8;
-      const depth = 300;
 
       cards.forEach((card, i) => {
         let rel = i - active;
+        // Wrap around
         if (rel > n / 2) rel -= n;
         if (rel < -n / 2) rel += n;
 
-        const angle = rel * 25;
-        const tx = rel * 350;
-        const tz = Math.abs(rel) * -depth;
-        const sc = 1 - Math.abs(rel) * 0.2;
+        const angle = rel * 22;
+        const tx = rel * 320;
+        const tz = Math.abs(rel) * -250;
+        const sc = Math.max(0.6, 1 - Math.abs(rel) * 0.25);
+        const opacity = Math.max(0.4, 1 - Math.abs(rel) * 0.3);
 
         card.style.transform = `translateX(${tx}px) translateZ(${tz}px) rotateY(${angle}deg) scale(${sc})`;
+        card.style.opacity = opacity;
         card.classList.toggle('active', rel === 0);
       });
     }
+
+    // Navegação
+    $('btnNext').addEventListener('click', () => {
+      state.activeCharacter = (state.activeCharacter + 1) % rolesBase.length;
+      updateCoverflowLayout();
+    });
+
+    $('btnPrev').addEventListener('click', () => {
+      state.activeCharacter = (state.activeCharacter - 1 + rolesBase.length) % rolesBase.length;
+      updateCoverflowLayout();
+    });
 
     // ===== MODAL DOSSIÊ =====
     function showDossierModal(index) {
