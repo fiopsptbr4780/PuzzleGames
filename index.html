@@ -2,807 +2,296 @@
 <html lang="pt-PT">
 <head>
   <meta charset="UTF-8" />
-  <title>Cenário ALPHA – Quimera (Carrossel 3D)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <style>
-    :root {
-      --card-width: 280px;
-      --card-height: 380px;
-      --card-gap: 60px;
-      --transition-speed: 0.6s;
-      --depth: 220px;
-      --inactive-scale: 0.75;
-      --inactive-opacity: 0.35;
-    }
-
-    body {
-      margin: 0;
-      padding: 0 16px 40px;
-      background: radial-gradient(circle at top, #1c2333 0%, #0a0f1a 55%, #05060b 100%);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: #eef3ff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    h1 {
-      margin-top: 24px;
-      font-size: 1.6rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #9fb7ff;
-      text-align: center;
-    }
-
-    h2 {
-      font-size: 1.1rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #9fb7ff;
-      margin-bottom: 8px;
-    }
-
-    p {
-      line-height: 1.4;
-    }
-
-    .section {
-      width: 100%;
-      max-width: 960px;
-      margin: 16px auto;
-      background: rgba(9, 13, 25, 0.75);
-      border-radius: 16px;
-      padding: 16px 18px;
-      border: 1px solid rgba(130, 160, 230, 0.4);
-    }
-
-    .section table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      font-size: 0.85rem;
-    }
-
-    .section th,
-    .section td {
-      border: 1px solid rgba(120, 140, 210, 0.5);
-      padding: 6px 8px;
-      text-align: left;
-    }
-
-    .section th {
-      background: rgba(22, 32, 56, 0.9);
-      color: #dbe5ff;
-    }
-
-    .section td {
-      background: rgba(11, 16, 28, 0.9);
-      color: #cbd7ff;
-    }
-
-    .section strong {
-      color: #dbe5ff;
-    }
-
-    .carousel-3d-wrapper {
-      position: relative;
-      width: 100%;
-      max-width: 960px;
-      height: 480px;
-      margin: 32px auto;
-      perspective: 1200px;
-      overflow: visible;
-    }
-
-    .carousel-3d {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      transition: transform var(--transition-speed) ease;
-    }
-
-    .card-3d {
-      position: absolute;
-      width: var(--card-width);
-      height: var(--card-height);
-      top: 50%;
-      left: 50%;
-      transform-style: preserve-3d;
-      transform-origin: center center;
-      border-radius: 20px;
-      background: linear-gradient(145deg, #182033, #232f4b);
-      box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.65),
-        0 0 40px rgba(90, 140, 255, 0.35);
-      cursor: pointer;
-      overflow: hidden;
-      transition:
-        transform var(--transition-speed) ease,
-        opacity var(--transition-speed) ease,
-        box-shadow var(--transition-speed) ease,
-        filter var(--transition-speed) ease;
-      display: flex;
-      flex-direction: column;
-      pointer-events: auto;
-    }
-
-    .card-3d.active {
-      opacity: 1;
-      filter: none;
-      box-shadow:
-        0 26px 60px rgba(0, 0, 0, 0.85),
-        0 0 60px rgba(120, 170, 255, 0.7);
-      border: 1px solid rgba(157, 195, 255, 0.5);
-    }
-
-    .card-3d.inactive {
-      opacity: var(--inactive-opacity);
-      filter: grayscale(0.35);
-    }
-
-    .card-3d-header {
-      padding: 18px 20px 10px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .card-3d-avatar {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #6fd7ff 0%, #3655ff 40%, #141b33 100%);
-      box-shadow: 0 0 24px rgba(100, 180, 255, 0.6);
-      flex-shrink: 0;
-      position: relative;
-    }
-
-    .card-3d-avatar::after {
-      content: "";
-      position: absolute;
-      inset: 8px;
-      border-radius: inherit;
-      border: 2px solid rgba(255, 255, 255, 0.35);
-    }
-
-    .card-3d-title-block {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .card-3d-role {
-      font-size: 0.85rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #8aa6ff;
-    }
-
-    .card-3d-name {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #f5f7ff;
-    }
-
-    .card-3d-tagline {
-      font-size: 0.75rem;
-      color: #afc4ff;
-      opacity: 0.9;
-    }
-
-    .card-3d-body {
-      flex: 1;
-      padding: 10px 20px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      font-size: 0.8rem;
-      color: #cbd7ff;
-    }
-
-    .card-3d-body h3 {
-      margin: 0;
-      font-size: 0.9rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #9bb7ff;
-    }
-
-    .card-3d-body p {
-      margin: 0;
-      line-height: 1.3;
-    }
-
-    .card-3d-footer {
-      padding: 10px 20px 16px;
-      border-top: 1px solid rgba(130, 154, 220, 0.3);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.75rem;
-      color: #9bb2ff;
-    }
-
-    .card-3d-footer span {
-      opacity: 0.9;
-    }
-
-    .card-3d-footer button {
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(145, 180, 255, 0.8);
-      background: radial-gradient(circle at 20% 0%, #6bd8ff 0%, #324bff 40%, #151a33 100%);
-      color: #f4f6ff;
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    .card-3d-footer button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 18px rgba(120, 180, 255, 0.85);
-    }
-
-    .carousel-nav {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      margin-top: 8px;
-    }
-
-    .nav-btn {
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(130, 155, 230, 0.8);
-      background: linear-gradient(135deg, #151b2a, #283455);
-      color: #dfe6ff;
-      font-size: 0.8rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .nav-btn:hover {
-      background: linear-gradient(135deg, #222d48, #374575);
-      transform: translateY(-1px);
-      box-shadow: 0 0 18px rgba(120, 170, 255, 0.7);
-    }
-
-    .nav-btn:active {
-      transform: translateY(1px) scale(0.98);
-      box-shadow: none;
-    }
-
-    .nav-indicators {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .nav-indicator-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: rgba(150, 180, 255, 0.35);
-      transform: scale(1);
-      transition: background 0.2s ease, transform 0.2s ease;
-    }
-
-    .nav-indicator-dot.active {
-      background: rgba(160, 210, 255, 0.95);
-      transform: scale(1.6);
-    }
-
-    .dossie-modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at top, rgba(30, 40, 70, 0.9), rgba(2, 3, 7, 0.96));
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 30;
-    }
-
-    .dossie-modal-backdrop.open {
-      display: flex;
-    }
-
-    .dossie-modal {
-      width: min(720px, 94vw);
-      max-height: 80vh;
-      background: #0a0f1a;
-      border-radius: 24px;
-      border: 1px solid rgba(155, 195, 255, 0.6);
-      box-shadow:
-        0 26px 80px rgba(0, 0, 0, 0.85),
-        0 0 80px rgba(120, 180, 255, 0.75);
-      padding: 20px 24px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      color: #e0e7ff;
-      overflow: hidden;
-    }
-
-    .dossie-modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .dossie-modal-title {
-      font-size: 1rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #9fb7ff;
-    }
-
-    .dossie-modal-close {
-      border: none;
-      background: transparent;
-      color: #9fb7ff;
-      font-size: 1.1rem;
-      cursor: pointer;
-    }
-
-    .dossie-modal-body {
-      font-size: 0.82rem;
-      line-height: 1.4;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-
-    /* Validador de solução */
-    .solver-form {
-      margin-top: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .solver-form label {
-      font-size: 0.85rem;
-      color: #cbd7ff;
-    }
-
-    .solver-form select {
-      background: #0a1020;
-      color: #e0e7ff;
-      border-radius: 999px;
-      border: 1px solid rgba(130, 160, 230, 0.7);
-      padding: 4px 10px;
-      font-size: 0.85rem;
-    }
-
-    .solver-btn {
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(145, 180, 255, 0.8);
-      background: linear-gradient(135deg, #151b2a, #283455);
-      color: #dfe6ff;
-      font-size: 0.8rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      cursor: pointer;
-    }
-
-    .solver-result {
-      margin-top: 8px;
-      font-size: 0.85rem;
-    }
-
-    .solver-result.ok {
-      color: #8ef0a0;
-    }
-
-    .solver-result.fail {
-      color: #ff9d9d;
-    }
-
-    @media (max-width: 768px) {
-      :root {
-        --card-width: 240px;
-        --card-height: 340px;
-        --card-gap: 40px;
-        --depth: 180px;
-      }
-
-      .carousel-3d-wrapper {
-        height: 420px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      :root {
-        --card-width: 210px;
-        --card-height: 320px;
-        --card-gap: 34px;
-        --depth: 150px;
-      }
-
-      .carousel-3d-wrapper {
-        height: 400px;
-      }
-    }
-  </style>
+  <meta name="description" content="Laboratório Quimera — Puzzle Game de dedução científica em português." />
+  <title>Laboratório Quimera</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Cenário ALPHA ativo – Laboratório Quimera</h1>
 
-  <!-- Seção de narrativa original -->
+<div class="page">
+
+  <header class="game-header">
+    <h1>🧪 Laboratório Quimera</h1>
+    <div class="difficulty-selector">
+      <label>Dificuldade:</label>
+      <button class="difficulty-btn" data-diff="easy">Fácil</button>
+      <button class="difficulty-btn active" data-diff="normal">Normal</button>
+      <button class="difficulty-btn" data-diff="hard">Difícil</button>
+    </div>
+    <div class="timer-container">
+      <span class="label">⏱ Tempo:</span>
+      <span id="timerDisplay" class="timer-value">00:00</span>
+      <button id="btnStartTimer">▶ Iniciar</button>
+      <button id="btnStopTimer" class="secondary">⏹ Parar</button>
+      <button id="btnResetTimer" class="secondary">↺ Reset</button>
+    </div>
+  </header>
+
+  <div class="score-container">
+    <div class="score-item">
+      <div class="score-label">Pontuação</div>
+      <div id="scoreDisplay" class="score-value">0</div>
+    </div>
+    <div class="score-item">
+      <div class="score-label">Dificuldade</div>
+      <div id="difficultyDisplay" class="score-value">Normal</div>
+    </div>
+    <div class="score-item">
+      <div class="score-label">Cenário</div>
+      <div class="score-value">ALPHA</div>
+    </div>
+  </div>
+
   <section class="section">
-    <h2>Narrativa do cenário</h2>
+    <h2>📋 Briefing</h2>
+    <p id="scenarioInfo">Cenário ALPHA ativo.</p>
     <p>Os jogadores assumem papéis de cientistas presos no laboratório Quimera após um lockdown de emergência.</p>
+  </section>
+
+  <section class="section" id="sec-p1">
+    <h2>🔐 Puzzle 1 — Código do Terminal</h2>
     <p>Escolhe o número de participantes e gera os papéis ocultos.</p>
     <p>Na versão digital, podes deduzir o código pelo micro-puzzle abaixo ou usar a dica.</p>
+    <h3>Micro‑puzzle lógico</h3>
+    <p>A leitura correta é <strong>Q-17</strong> e aponta para <strong>Armazenamento Térmico</strong>.</p>
+    <div class="solver-form">
+      <div>
+        <label for="p1code">Código alfanumérico</label>
+        <input id="p1code" type="text" placeholder="ex: Q-17" />
+      </div>
+      <div>
+        <label for="p1sector">Setor de origem</label>
+        <input id="p1sector" type="text" placeholder="ex: Armazenamento Térmico" />
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:12px">
+      <button class="solver-btn" onclick="checkP1()">✔ Verificar</button>
+      <button class="secondary" onclick="giveHint('p1')">💡 Dica</button>
+    </div>
+    <div id="resultP1" class="solver-result hidden"></div>
   </section>
 
-  <!-- Micro-puzzle e tabela de pistas -->
-  <section class="section">
-    <h2>Micro‑puzzle lógico</h2>
-    <p>A leitura correta é <strong>Q‑17</strong> e aponta para <strong>Armazenamento Térmico</strong>.</p>
-    <p>A interface aceita frases que mencionem <strong>"SISTEMAS"</strong> e <strong>"03:00"</strong>.</p>
-
+  <section class="section" id="sec-p2">
+    <h2>🖥 Puzzle 2 — Log de Acesso</h2>
+    <p>Aceita frases que mencionem <strong>"SISTEMAS"</strong> e <strong>"03:00"</strong>.</p>
     <table>
-      <thead>
-        <tr>
-          <th>Categoria</th>
-          <th>Pista</th>
-          <th>Significado</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Categoria</th><th>Pista</th><th>Significado</th></tr></thead>
       <tbody>
-        <tr>
-          <td>Origem</td>
-          <td>Armazenamento Térmico</td>
-          <td>A amostra original foi retirada do frigorífico central.</td>
-        </tr>
-        <tr>
-          <td>Log</td>
-          <td>Arquiteto de Sistemas / 03:00</td>
-          <td>Os logs apontam para atividade no terminal.</td>
-        </tr>
-        <tr>
-          <td>Agente</td>
-          <td>Neurotoxina B</td>
-          <td>A substância ativa identificada não é um vírus tradicional.</td>
-        </tr>
-        <tr>
-          <td>Chave</td>
-          <td>Engenheiro de Segurança</td>
-          <td>A credencial usada foi desviada.</td>
-        </tr>
-        <tr>
-          <td>Alvo</td>
-          <td>Sala de Descontaminação</td>
-          <td>O mecanismo foi preparado para esse compartimento.</td>
-        </tr>
+        <tr><td>Origem</td><td>Armazenamento Térmico</td><td>A amostra original foi retirada do frigorífico central.</td></tr>
+        <tr><td>Log</td><td>Arquiteto de Sistemas / 03:00</td><td>Os logs apontam para atividade no terminal.</td></tr>
+        <tr><td>Agente</td><td>Neurotoxina B</td><td>A substância ativa identificada não é um vírus tradicional.</td></tr>
+        <tr><td>Chave</td><td>Engenheiro de Segurança</td><td>A credencial usada foi desviada.</td></tr>
+        <tr><td>Alvo</td><td>Sala de Descontaminação</td><td>O mecanismo foi preparado para esse compartimento.</td></tr>
       </tbody>
     </table>
-  </section>
-
-  <!-- Carrossel 3D de papéis -->
-  <div class="carousel-3d-wrapper" id="carouselWrapper">
-    <div class="carousel-3d" id="carousel3d">
-      <!-- Engenheiro de Segurança -->
-      <article class="card-3d" data-index="0">
-        <header class="card-3d-header">
-          <div class="card-3d-avatar"></div>
-          <div class="card-3d-title-block">
-            <div class="card-3d-role">Engenheiro de Segurança</div>
-            <div class="card-3d-name">Dossiê do Engenheiro</div>
-            <div class="card-3d-tagline">Chave para o desvio de credenciais e acesso físico.</div>
-          </div>
-        </header>
-        <section class="card-3d-body">
-          <h3>Dossiê resumido</h3>
-          <p>"Perdi o meu cartão às 02:30 no refeitório."</p>
-          <p>Responsável por credenciais de acesso; a perda do cartão abre margem para uso indevido na Sala de Descontaminação.</p>
-        </section>
-        <footer class="card-3d-footer">
-          <span>Papel: Chave de acesso</span>
-          <button type="button" class="open-dossie-btn">Abrir dossiê</button>
-        </footer>
-      </article>
-
-      <!-- Arquiteto de Sistemas -->
-      <article class="card-3d" data-index="1">
-        <header class="card-3d-header">
-          <div class="card-3d-avatar"></div>
-          <div class="card-3d-title-block">
-            <div class="card-3d-role">Arquiteto de Sistemas</div>
-            <div class="card-3d-name">Log de Sistemas / 03:00</div>
-            <div class="card-3d-tagline">Responsável pelos terminais e pelo fluxo digital do laboratório.</div>
-          </div>
-        </header>
-        <section class="card-3d-body">
-          <h3>Dossiê resumido</h3>
-          <p>Os logs apontam para atividade no terminal às 03:00, ligando o Arquiteto de Sistemas ao disparo de protocolos de segurança.</p>
-          <p>Tem acesso privilegiado à infraestrutura digital ligada ao Armazenamento Térmico e ao mecanismo de descontaminação.</p>
-        </section>
-        <footer class="card-3d-footer">
-          <span>Papel: Principal suspeito do cenário</span>
-          <button type="button" class="open-dossie-btn">Abrir dossiê</button>
-        </footer>
-      </article>
-
-      <!-- Geneticista -->
-      <article class="card-3d" data-index="2">
-        <header class="card-3d-header">
-          <div class="card-3d-avatar"></div>
-          <div class="card-3d-title-block">
-            <div class="card-3d-role">Geneticista</div>
-            <div class="card-3d-name">Gestora de amostras</div>
-            <div class="card-3d-tagline">Ligada a Solvente C e à gestão de Armazenamento Térmico.</div>
-          </div>
-        </header>
-        <section class="card-3d-body">
-          <h3>Dossiê resumido</h3>
-          <p>Controla amostras de alta criticidade, incluindo Solvente C e Neurotoxina B, com movimentações ligadas a Armazenamento Térmico.</p>
-          <p>Podem existir cenários alternativos em que o Geneticista é o culpado ou nenhum agente direto é identificado.</p>
-        </section>
-        <footer class="card-3d-footer">
-          <span>Papel: Possível culpado alternativo</span>
-          <button type="button" class="open-dossie-btn">Abrir dossiê</button>
-        </footer>
-      </article>
-    </div>
-  </div>
-
-  <div class="carousel-nav">
-    <button type="button" class="nav-btn" id="prevBtn">← Anterior</button>
-    <div class="nav-indicators" id="navIndicators"></div>
-    <button type="button" class="nav-btn" id="nextBtn">Próximo →</button>
-  </div>
-
-  <!-- Seção de resoluções possíveis + validador -->
-  <section class="section">
-    <h2>Resoluções do cenário</h2>
-    <p>Cenários possíveis (podem variar conforme o grupo ou versão da história):</p>
-    <p>Culpado: <strong>Arquiteto de Sistemas</strong>. Substância: <strong>Neurotoxina B</strong>. Local: <strong>Sala de Descontaminação</strong>.</p>
-    <p>Culpado: <strong>Geneticista</strong>. Substância: <strong>Solvente C</strong>. Local: <strong>Armazenamento Térmico</strong>.</p>
-    <p>Culpado: <strong>Nenhum</strong>. Substância: <strong>Neurotoxina B</strong>. Local: <strong>Sala de Reatores</strong>.</p>
-
-    <div class="solver-form">
-      <label for="culpadoSelect">Culpado:</label>
-      <select id="culpadoSelect">
-        <option>Arquiteto de Sistemas</option>
-        <option>Geneticista</option>
-        <option>Nenhum</option>
-      </select>
-
-      <label for="substanciaSelect">Substância:</label>
-      <select id="substanciaSelect">
-        <option>Neurotoxina B</option>
-        <option>Solvente C</option>
-      </select>
-
-      <label for="localSelect">Local:</label>
-      <select id="localSelect">
-        <option>Sala de Descontaminação</option>
-        <option>Armazenamento Térmico</option>
-        <option>Sala de Reatores</option>
-      </select>
-
-      <button type="button" class="solver-btn" id="solverBtn">Verificar solução</button>
-    </div>
-    <div id="solverResult" class="solver-result"></div>
-  </section>
-
-  <!-- Modal de dossiê detalhado -->
-  <div class="dossie-modal-backdrop" id="dossieBackdrop">
-    <div class="dossie-modal">
-      <div class="dossie-modal-header">
-        <div class="dossie-modal-title" id="dossieTitle">Dossiê detalhado</div>
-        <button class="dossie-modal-close" id="closeDossieBtn">&times;</button>
+    <div class="solver-form" style="margin-top:14px">
+      <div>
+        <label for="p2input">Resposta (menciona quem e a que horas)</label>
+        <input id="p2input" type="text" placeholder="ex: Arquiteto de Sistemas às 03:00" />
       </div>
-      <div class="dossie-modal-body" id="dossieBody"></div>
     </div>
+    <div class="btn-row" style="margin-top:12px">
+      <button class="solver-btn" onclick="checkP2()">✔ Verificar</button>
+      <button class="secondary" onclick="giveHint('p2')">💡 Dica</button>
+    </div>
+    <div id="resultP2" class="solver-result hidden"></div>
+  </section>
+
+  <section class="section" id="sec-p3">
+    <h2>☣ Puzzle 3 — Identificação da Substância</h2>
+    <div class="solver-form">
+      <div>
+        <label for="p3select">Substância identificada</label>
+        <select id="p3select">
+          <option value="">— seleciona —</option>
+          <option value="NEUROTOXINA B">Neurotoxina B</option>
+          <option value="SOLVENTE C">Solvente C</option>
+          <option value="AGENTE VIRAL X">Agente Viral X</option>
+          <option value="COMPOSTO D">Composto D</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:12px">
+      <button class="solver-btn" onclick="checkP3()">✔ Verificar</button>
+      <button class="secondary" onclick="giveHint('p3')">💡 Dica</button>
+    </div>
+    <div id="resultP3" class="solver-result hidden"></div>
+  </section>
+
+  <section class="section" id="sec-p4">
+    <h2>🔑 Puzzle 4 — Credencial Roubada</h2>
+    <p>Dossiê do Engenheiro: <em>"Perdi o meu cartão às 02:30 no refeitório."</em></p>
+    <div class="solver-form">
+      <div>
+        <label for="p4select">Proprietário da credencial</label>
+        <select id="p4select">
+          <option value="">— seleciona —</option>
+          <option value="ENGENHEIRO DE SEGURANÇA">Engenheiro de Segurança</option>
+          <option value="ARQUITETO DE SISTEMAS">Arquiteto de Sistemas</option>
+          <option value="GENETICISTA">Geneticista</option>
+          <option value="TÉCNICO DE MANUTENÇÃO">Técnico de Manutenção</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:12px">
+      <button class="solver-btn" onclick="checkP4()">✔ Verificar</button>
+      <button class="secondary" onclick="giveHint('p4')">💡 Dica</button>
+    </div>
+    <div id="resultP4" class="solver-result hidden"></div>
+  </section>
+
+  <section class="section" id="sec-p5">
+    <h2>📍 Puzzle 5 — Local do Vetor</h2>
+    <div class="solver-form">
+      <div>
+        <label for="p5select">Local de libertação</label>
+        <select id="p5select">
+          <option value="">— seleciona —</option>
+          <option value="SALA DE DESCONTAMINAÇÃO">Sala de Descontaminação</option>
+          <option value="ARMAZENAMENTO TÉRMICO">Armazenamento Térmico</option>
+          <option value="SALA DE REATORES">Sala de Reatores</option>
+          <option value="LABORATÓRIO CENTRAL">Laboratório Central</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:12px">
+      <button class="solver-btn" onclick="checkP5()">✔ Verificar</button>
+      <button class="secondary" onclick="giveHint('p5')">💡 Dica</button>
+    </div>
+    <div id="resultP5" class="solver-result hidden"></div>
+  </section>
+
+  <section class="section">
+    <h2>👥 Personagens</h2>
+    <div class="carousel-3d-wrapper">
+      <div class="carousel-3d" id="carousel">
+        <div class="card-3d active" data-index="0">
+          <div class="card-3d-header">
+            <div class="card-3d-avatar"></div>
+            <div class="card-3d-title-block">
+              <span class="card-3d-role">Suspeito Principal</span>
+              <span class="card-3d-name">Arquiteto de Sistemas</span>
+              <span class="card-3d-tagline">Acesso total à infraestrutura</span>
+            </div>
+          </div>
+          <div class="card-3d-body">
+            <h3>Perfil</h3>
+            <p>Responsável pela arquitetura dos sistemas críticos do laboratório. Possui acesso privilegiado a todos os terminais.</p>
+          </div>
+          <div class="card-3d-footer">
+            <span>Log: 03:00</span>
+            <button class="open-dossie-btn" onclick="openDossie(0)">📁 Dossiê</button>
+          </div>
+        </div>
+        <div class="card-3d inactive" data-index="1">
+          <div class="card-3d-header">
+            <div class="card-3d-avatar"></div>
+            <div class="card-3d-title-block">
+              <span class="card-3d-role">Alibi Suspeito</span>
+              <span class="card-3d-name">Engenheiro de Segurança</span>
+              <span class="card-3d-tagline">Perdeu o cartão às 02:30</span>
+            </div>
+          </div>
+          <div class="card-3d-body">
+            <h3>Perfil</h3>
+            <p>Responsável pela segurança física. Afirma ter perdido o seu crachá no refeitório antes do incidente.</p>
+          </div>
+          <div class="card-3d-footer">
+            <span>Credencial: roubada</span>
+            <button class="open-dossie-btn" onclick="openDossie(1)">📁 Dossiê</button>
+          </div>
+        </div>
+        <div class="card-3d inactive" data-index="2">
+          <div class="card-3d-header">
+            <div class="card-3d-avatar"></div>
+            <div class="card-3d-title-block">
+              <span class="card-3d-role">Inocente</span>
+              <span class="card-3d-name">Geneticista</span>
+              <span class="card-3d-tagline">Alibi confirmado</span>
+            </div>
+          </div>
+          <div class="card-3d-body">
+            <h3>Perfil</h3>
+            <p>Especialista em modificação genética. Estava em videoconferência externa durante o incidente.</p>
+          </div>
+          <div class="card-3d-footer">
+            <span>Cenário: BETA</span>
+            <button class="open-dossie-btn" onclick="openDossie(2)">📁 Dossiê</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-nav">
+      <button class="nav-btn" id="btnPrev" onclick="carouselPrev()">&#8592;</button>
+      <div class="nav-indicators" id="navDots"></div>
+      <button class="nav-btn" id="btnNext" onclick="carouselNext()">&#8594;</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>💡 Dicas Disponíveis</h2>
+    <div id="hintsContainer" class="hints-container"></div>
+  </section>
+
+  <section class="section">
+    <h2>📜 Histórico</h2>
+    <div id="historyList" class="attempts-history"></div>
+    <div class="btn-row" style="margin-top:12px">
+      <button class="secondary" onclick="clearHistory()">🗑 Limpar histórico</button>
+      <button class="secondary" onclick="resetGame()">↺ Reiniciar jogo</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>🏆 Solução Final</h2>
+    <div class="solver-form">
+      <div>
+        <label for="finalCulprit">Culpado</label>
+        <select id="finalCulprit">
+          <option value="">— seleciona —</option>
+          <option value="ARQUITETO DE SISTEMAS">Arquiteto de Sistemas</option>
+          <option value="ENGENHEIRO DE SEGURANÇA">Engenheiro de Segurança</option>
+          <option value="GENETICISTA">Geneticista</option>
+        </select>
+      </div>
+      <div>
+        <label for="finalSubstance">Substância</label>
+        <select id="finalSubstance">
+          <option value="">— seleciona —</option>
+          <option value="NEUROTOXINA B">Neurotoxina B</option>
+          <option value="SOLVENTE C">Solvente C</option>
+          <option value="AGENTE VIRAL X">Agente Viral X</option>
+        </select>
+      </div>
+      <div>
+        <label for="finalLocation">Local</label>
+        <select id="finalLocation">
+          <option value="">— seleciona —</option>
+          <option value="SALA DE DESCONTAMINAÇÃO">Sala de Descontaminação</option>
+          <option value="ARMAZENAMENTO TÉRMICO">Armazenamento Térmico</option>
+          <option value="SALA DE REATORES">Sala de Reatores</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:12px">
+      <button class="solver-btn" onclick="checkFinal()">🔍 Resolver Caso</button>
+    </div>
+    <div id="resultFinal" class="solver-result hidden"></div>
+  </section>
+
+</div>
+
+<div class="dossie-modal-backdrop" id="dossieBackdrop" onclick="closeDossie(event)">
+  <div class="dossie-modal">
+    <div class="dossie-modal-header">
+      <span class="dossie-modal-title" id="dossieTitle">Dossiê</span>
+      <button class="dossie-modal-close" onclick="closeDossieBtn()">✕</button>
+    </div>
+    <div class="dossie-modal-body" id="dossieBody"></div>
   </div>
+</div>
 
-  <script>
-    const carousel = document.getElementById("carousel3d");
-    const cards = Array.from(document.querySelectorAll(".card-3d"));
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    const navIndicators = document.getElementById("navIndicators");
-
-    let activeIndex = 0;
-    const angleStep = 26;
-    const gap = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--card-gap"));
-    const depth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--depth"));
-
-    const dossies = [
-      {
-        titulo: "Dossiê – Engenheiro de Segurança",
-        corpo: `
-          <p><strong>Nota direta:</strong> "Perdi o meu cartão às 02:30 no refeitório."</p>
-          <p><strong>Perfil:</strong> Responsável por credenciais de acesso e sistemas físicos de proteção.</p>
-          <p><strong>Ligação ao puzzle:</strong> A credencial desviada é usada na preparação do mecanismo para a Sala de Descontaminação.</p>
-        `
-      },
-      {
-        titulo: "Dossiê – Arquiteto de Sistemas",
-        corpo: `
-          <p><strong>Perfil:</strong> Administra o terminal central, incluindo módulo de Armazenamento Térmico.</p>
-          <p><strong>Log chave:</strong> Atividade identificada às 03:00, associada a manipulação de protocolos de segurança.</p>
-          <p><strong>Ligação ao puzzle:</strong> A combinação de "SISTEMAS" e "03:00" aponta para este papel como principal suspeito.</p>
-        `
-      },
-      {
-        titulo: "Dossiê – Geneticista",
-        corpo: `
-          <p><strong>Perfil:</strong> Gestora de amostras, incluindo Neurotoxina B e Solvente C, com acesso ao Armazenamento Térmico.</p>
-          <p><strong>Cenários alternativos:</strong> Em determinadas configurações, o Geneticista pode ser o culpado ou nenhum culpado direto é identificado.</p>
-          <p><strong>Ligação ao puzzle:</strong> As pistas de Origem e Agente ligam o seu trabalho às salas de Armazenamento Térmico e Reatores.</p>
-        `
-      }
-    ];
-
-    cards.forEach((_, idx) => {
-      const dot = document.createElement("div");
-      dot.className = "nav-indicator-dot" + (idx === activeIndex ? " active" : "");
-      dot.dataset.index = idx;
-      dot.addEventListener("click", () => setActiveIndex(idx));
-      navIndicators.appendChild(dot);
-    });
-
-    function updateIndicators() {
-      const dots = navIndicators.querySelectorAll(".nav-indicator-dot");
-      dots.forEach((dot, idx) => {
-        dot.classList.toggle("active", idx === activeIndex);
-      });
-    }
-
-    function setActiveIndex(newIndex) {
-      const total = cards.length;
-      activeIndex = (newIndex + total) % total;
-      layoutCards();
-      updateIndicators();
-    }
-
-    function layoutCards() {
-      cards.forEach((card, idx) => {
-        const offset = idx - activeIndex;
-        const rotateY = offset * angleStep;
-        const translateX = offset * (gap + 40);
-        const translateZ = -Math.abs(offset) * depth;
-        const scale = idx === activeIndex ? 1 : (1 - Math.min(Math.abs(offset) * 0.09, 0.25));
-
-        card.style.transform = `
-          translate3d(${translateX}px, -50%, ${translateZ}px)
-          rotateY(${rotateY}deg)
-          scale(${scale})
-        `;
-
-        card.classList.toggle("active", idx === activeIndex);
-        card.classList.toggle("inactive", idx !== activeIndex);
-        card.style.zIndex = String(100 - Math.abs(offset));
-      });
-    }
-
-    prevBtn.addEventListener("click", () => setActiveIndex(activeIndex - 1));
-    nextBtn.addEventListener("click", () => setActiveIndex(activeIndex + 1));
-
-    let wheelDebounce = null;
-    carousel.addEventListener("wheel", (evt) => {
-      evt.preventDefault();
-      if (wheelDebounce) return;
-      wheelDebounce = setTimeout(() => (wheelDebounce = null), 220);
-
-      const delta = evt.deltaY || evt.deltaX;
-      if (delta > 0) {
-        setActiveIndex(activeIndex + 1);
-      } else if (delta < 0) {
-        setActiveIndex(activeIndex - 1);
-      }
-    }, { passive: false });
-
-    let touchStartX = null;
-    let touchEndX = null;
-    carousel.addEventListener("touchstart", (evt) => {
-      if (evt.touches.length === 1) {
-        touchStartX = evt.touches[0].clientX;
-      }
-    }, { passive: true });
-
-    carousel.addEventListener("touchmove", (evt) => {
-      if (evt.touches.length === 1) {
-        touchEndX = evt.touches[0].clientX;
-      }
-    }, { passive: true });
-
-    carousel.addEventListener("touchend", () => {
-      if (touchStartX !== null && touchEndX !== null) {
-        const deltaX = touchEndX - touchStartX;
-        if (Math.abs(deltaX) > 30) {
-          if (deltaX < 0) {
-            setActiveIndex(activeIndex + 1);
-          } else {
-            setActiveIndex(activeIndex - 1);
-          }
-        }
-      }
-      touchStartX = null;
-      touchEndX = null;
-    });
-
-    const backdrop = document.getElementById("dossieBackdrop");
-    const dossieTitleEl = document.getElementById("dossieTitle");
-    const dossieBodyEl = document.getElementById("dossieBody");
-    const closeBtn = document.getElementById("closeDossieBtn");
-
-    function openDossie(idx) {
-      const data = dossies[idx] || dossies[0];
-      dossieTitleEl.textContent = data.titulo;
-      dossieBodyEl.innerHTML = data.corpo;
-      backdrop.classList.add("open");
-    }
-
-    function closeDossie() {
-      backdrop.classList.remove("open");
-    }
-
-    cards.forEach((card, idx) => {
-      card.addEventListener("click", (evt) => {
-        if (evt.target.closest(".open-dossie-btn") || evt.target.closest(".card-3d")) {
-          openDossie(idx);
-        }
-      });
-    });
-
-    closeBtn.addEventListener("click", closeDossie);
-    backdrop.addEventListener("click", (evt) => {
-      if (evt.target === backdrop) {
-        closeDossie();
-      }
-    });
-
-    layoutCards();
-
-    // Validador de solução
-    const solverBtn = document.getElementById("solverBtn");
-    const solverResult = document.getElementById("solverResult");
-
-    const correctSolution = {
-      culpado: "Arquiteto de Sistemas",
-      substancia: "Neurotoxina B",
-      local: "Sala de Descontaminação"
-    };
-
-    solverBtn.addEventListener("click", () => {
-      const culpado = document.getElementById("culpadoSelect").value;
-      const substancia = document.getElementById("substanciaSelect").value;
-      const local = document.getElementById("localSelect").value;
-
-      const ok =
-        culpado === correctSolution.culpado &&
-        substancia === correctSolution.substancia &&
-        local === correctSolution.local;
-
-      if (ok) {
-        solverResult.textContent = "✔ Combinação correta para o cenário ALPHA: o Arquiteto de Sistemas usou Neurotoxina B na Sala de Descontaminação.";
-        solverResult.classList.remove("fail");
-        solverResult.classList.add("ok");
-      } else {
-        solverResult.textContent = "✖ Essa combinação não corresponde ao cenário principal. Explora as pistas (Origem, Log, Agente, Chave, Alvo) e tenta novamente.";
-        solverResult.classList.remove("ok");
-        solverResult.classList.add("fail");
-      }
-    });
-  </script>
+<script src="script.js"></script>
 </body>
 </html>

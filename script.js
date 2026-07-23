@@ -9,40 +9,289 @@ const state = {
   timerHandle: null,
   difficulty: 'normal'
 };
-const scenarios = { ALPHA: { culprit: 'Arquiteto de Sistemas', substance: 'NEUROTOXINA B', location: 'Sala de Descontaminação', p1code: 'Q-17', p1sector: 'Armazenamento Térmico', p3: 'NEUROTOXINA B', p4: 'Engenheiro de Segurança', p5: 'Sala de Descontaminação', gridLog: 'Arquiteto de Sistemas / 03:00', info: 'Cenário ALPHA ativo.', hints: ['A combinação correta junta um código alfanumérico e o setor de origem da amostra.', 'A resposta tem de mencionar quem acedeu ao terminal e a hora 03:00.', 'No cenário base, a substância é a opção mais perigosa da lista.', 'A credencial roubada pertence ao responsável pela segurança física.', 'O vetor aponta para a divisão crítica ligada ao controlo de agentes biológicos.'] } };
+
+const scenarios = {
+  ALPHA: {
+    culprit: 'Arquiteto de Sistemas',
+    substance: 'NEUROTOXINA B',
+    location: 'Sala de Descontaminação',
+    p1code: 'Q-17',
+    p1sector: 'Armazenamento Térmico',
+    p3: 'NEUROTOXINA B',
+    p4: 'Engenheiro de Segurança',
+    p5: 'Sala de Descontaminação',
+    gridLog: 'Arquiteto de Sistemas / 03:00',
+    info: 'Cenário ALPHA ativo.',
+    hints: [
+      'A combinação correta junta um código alfanumérico e o setor de origem da amostra.',
+      'A resposta tem de mencionar quem acedeu ao terminal e a hora 03:00.',
+      'No cenário base, a substância é a opção mais perigosa da lista.',
+      'A credencial roubada pertence ao responsável pela segurança física.',
+      'O vetor aponta para a divisão crítica ligada ao controlo de agentes biológicos.'
+    ]
+  }
+};
+
 const el = id => document.getElementById(id);
-const norm = s => String(s || '').toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
-function save(){ localStorage.setItem('quimeraState', JSON.stringify({score:state.score, attempts:state.attempts, timer:state.timer, difficulty:state.difficulty})); }
-function load(){ const raw = localStorage.getItem('quimeraState'); if(!raw) return; try{ const d = JSON.parse(raw); state.score=d.score||0; state.attempts=d.attempts||[]; state.timer=d.timer||0; state.difficulty=d.difficulty||'normal'; }catch(e){} }
-function render(){ el('scoreDisplay').textContent = state.score; el('difficultyDisplay').textContent = ({easy:'Fácil',normal:'Normal',hard:'Difícil'})[state.difficulty]; el('timerDisplay').textContent = new Date(state.timer*1000).toISOString().slice(14,19); el('historyList').innerHTML = state.attempts.slice(-20).reverse().map(a=>`<div class="history-item ${a.ok?'ok':'fail'}"><strong>${a.puzzle}</strong> — ${a.ok?'Certo':'Errado'} — ${a.detail}</div>`).join('') || '<div class="small">Sem tentativas ainda.</div>'; const s = scenarios[state.activeScenario]; ['gridOrigem','gridLog','gridAgente','gridChave','gridAlvo'].forEach((k,i)=>{ el(k).textContent = [s.p1sector,s.gridLog,s.substance,s.p4,s.location][i]; }); el('btnAbrirArquivo').disabled = !(state.solved.p1&&state.solved.p2&&state.solved.p3&&state.solved.p4&&state.solved.p5); }
-function addAttempt(puzzle, ok, detail){ state.attempts.push({time: new Date().toLocaleTimeString(), puzzle, ok, detail}); if(ok) state.score += ({easy:10,normal:15,hard:20})[state.difficulty]; else state.score = Math.max(0, state.score - 2); save(); render(); }
-function showHint(key, box){ state.hintLevel[key] = Math.min(3, state.hintLevel[key]+1); const hints = { p1:['Pensa no formato do código.', 'Q-17 é a leitura correta.', 'O setor é Armazenamento Térmico.'], p2:['Inclui a palavra SISTEMAS.', 'Inclui também 03:00.', 'A frase confirma atividade no terminal.'], p3:['No cenário ALPHA é NEUROTOXINA B.', 'Usa a opção mais perigosa.', 'Confere a pista do arquivo.'], p4:['É a credencial de segurança física.', 'Não é o geneticista.', 'A chave associada é Engenheiro de Segurança.'], p5:['A sala ligada ao mecanismo é a correta.', 'Não é Reatores.', 'É Sala de Descontaminação.'] }; el(box).textContent = hints[key][state.hintLevel[key]-1] || hints[key][2]; el(box).classList.remove('hidden'); state.score = Math.max(0, state.score - 1); save(); render(); }
-function validatePuzzle1(){ const ok = norm(el('p1codigo').value) === 'Q-17' && norm(el('p1setor').value) === 'ARMAZENAMENTO TERMICO'; el('p1Resultado').textContent = ok ? 'Puzzle 1 correto.' : 'Puzzle 1 incorreto.'; el('p1Resultado').className = 'result ' + (ok?'ok':'fail'); el('p1Resultado').classList.remove('hidden'); state.solved.p1 = ok; addAttempt('Puzzle 1', ok, `${el('p1codigo').value} | ${el('p1setor').value}`); if(ok) state.score += 5; }
-function validatePuzzle2(){ const v = norm(el('p2frase').value); const ok = v.includes('SISTEMAS') && v.includes('03:00'); el('p2Resultado').textContent = ok ? 'Puzzle 2 correto.' : 'Puzzle 2 incorreto.'; el('p2Resultado').className = 'result ' + (ok?'ok':'fail'); el('p2Resultado').classList.remove('hidden'); state.solved.p2 = ok; addAttempt('Puzzle 2', ok, el('p2frase').value.slice(0,60)); }
-function validatePuzzle3(){ const ok = norm(el('p3substancia').value) === state.activeScenario && norm(el('p3substancia').value) === 'NEUROTOXINA B'; }
-function validateSimple(id, expected, puzzle){ const ok = norm(el(id).value) === norm(expected); el(`${puzzle}Resultado`).textContent = ok ? `${puzzle.replace('p','Puzzle ')} correto.` : `${puzzle.replace('p','Puzzle ')} incorreto.`; el(`${puzzle}Resultado`).className = 'result ' + (ok?'ok':'fail'); el(`${puzzle}Resultado`).classList.remove('hidden'); state.solved[puzzle] = ok; addAttempt(puzzle.replace('p','Puzzle '), ok, el(id).value); }
-function validatePuzzle3b(){ const ok = norm(el('p3substancia').value) === norm(scenarios[state.activeScenario].substance); el('p3Resultado').textContent = ok ? 'Puzzle 3 correto.' : 'Puzzle 3 incorreto.'; el('p3Resultado').className = 'result ' + (ok?'ok':'fail'); el('p3Resultado').classList.remove('hidden'); state.solved.p3 = ok; addAttempt('Puzzle 3', ok, el('p3substancia').value); }
-function validatePuzzle4(){ const ok = norm(el('p4chave').value) === norm(scenarios[state.activeScenario].p4); el('p4Resultado').textContent = ok ? 'Puzzle 4 correto.' : 'Puzzle 4 incorreto.'; el('p4Resultado').className = 'result ' + (ok?'ok':'fail'); el('p4Resultado').classList.remove('hidden'); state.solved.p4 = ok; addAttempt('Puzzle 4', ok, el('p4chave').value); }
-function validatePuzzle5(){ const ok = norm(el('p5sala').value) === norm(scenarios[state.activeScenario].p5); el('p5Resultado').textContent = ok ? 'Puzzle 5 correto.' : 'Puzzle 5 incorreto.'; el('p5Resultado').className = 'result ' + (ok?'ok':'fail'); el('p5Resultado').classList.remove('hidden'); state.solved.p5 = ok; addAttempt('Puzzle 5', ok, el('p5sala').value); }
-function generateDossiers(){ const n = Number(el('numJogadores').value); const list = ['Engenheiro de Segurança','Arquiteto de Sistemas','Geneticista','Chefe de Bioquímica','Perito de Vantagem','Diretor do Lab'].slice(0,n); el('listaDossies').innerHTML = list.map((r,i)=>`<div class="dossier-card"><h3>${r}</h3><p>Histórico e objetivo oculto ${i+1}.</p></div>`).join(''); el('dossiesInfo').textContent = `${n} dossiês gerados.`; }
-function openArquivo(){ el('arquivoConteudo').classList.remove('hidden'); el('arquivoFeedback').textContent = 'Arquivo aberto.'; el('arquivoFeedback').className = 'result ok'; el('arquivoFeedback').classList.remove('hidden'); }
-function verifyAccusation(){ const s = scenarios[state.activeScenario]; const ok = norm(el('acusadoNome').value) === norm(s.culprit) && norm(el('acusadoLocal').value) === norm(s.location) && norm(el('acusadoSubstancia').value) === norm(s.substance); el('acusacaoResultado').textContent = ok ? 'Teoria final correta.' : 'Teoria final incorreta.'; el('acusacaoResultado').className = 'result ' + (ok?'ok':'fail'); el('acusacaoResultado').classList.remove('hidden'); addAttempt('Acusação final', ok, `${el('acusadoNome').value} | ${el('acusadoLocal').value} | ${el('acusadoSubstancia').value}`); }
-function tick(){ state.timer++; render(); save(); }
-function startTimer(){ if(state.timerHandle) return; state.timerHandle = setInterval(tick, 1000); }
-function reset(){ state.solved = { p1:false,p2:false,p3:false,p4:false,p5:false }; state.score = 0; state.timer = 0; state.attempts = []; state.hintLevel = { p1:0,p2:0,p3:0,p4:0,p5:0 }; ['hint1','hint2','hint3','hint4','hint5','p1Resultado','p2Resultado','p3Resultado','p4Resultado','p5Resultado','acusacaoResultado','arquivoFeedback'].forEach(id=>{ el(id).classList.add('hidden'); el(id).textContent=''; }); el('arquivoConteudo').classList.add('hidden'); render(); save(); }
-load(); render(); generateDossiers(); startTimer();
-el('btnGerarDossies').addEventListener('click', generateDossiers);
-el('btnReset').addEventListener('click', reset);
-el('btnPuzzle1').addEventListener('click', validatePuzzle1);
-el('btnPuzzle2').addEventListener('click', validatePuzzle2);
-el('btnPuzzle3').addEventListener('click', validatePuzzle3b);
-el('btnPuzzle4').addEventListener('click', validatePuzzle4);
-el('btnPuzzle5').addEventListener('click', validatePuzzle5);
-el('btnHint1').addEventListener('click', ()=>showHint('p1','hint1'));
-el('btnHint2').addEventListener('click', ()=>showHint('p2','hint2'));
-el('btnHint3').addEventListener('click', ()=>showHint('p3','hint3'));
-el('btnHint4').addEventListener('click', ()=>showHint('p4','hint4'));
-el('btnHint5').addEventListener('click', ()=>showHint('p5','hint5'));
-el('btnAbrirArquivo').addEventListener('click', openArquivo);
-el('btnVerificarAcusacao').addEventListener('click', verifyAccusation);
-el('difficultySelect').addEventListener('change', e=>{ state.difficulty = e.target.value; save(); render(); });
+const norm = s => String(s || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+
+function save() {
+  localStorage.setItem('quimeraState', JSON.stringify({
+    score: state.score,
+    attempts: state.attempts,
+    timer: state.timer,
+    difficulty: state.difficulty
+  }));
+}
+
+function load() {
+  const raw = localStorage.getItem('quimeraState');
+  if (!raw) return;
+  try {
+    const d = JSON.parse(raw);
+    state.score = d.score || 0;
+    state.attempts = d.attempts || [];
+    state.timer = d.timer || 0;
+    state.difficulty = d.difficulty || 'normal';
+  } catch (e) {}
+}
+
+function render() {
+  el('scoreDisplay').textContent = state.score;
+  el('difficultyDisplay').textContent = ({ easy: 'Fácil', normal: 'Normal', hard: 'Difícil' })[state.difficulty];
+  el('timerDisplay').textContent = new Date(state.timer * 1000).toISOString().slice(14, 19);
+  const history = el('historyList');
+  if (history) {
+    history.innerHTML = state.attempts.slice(-20).reverse().map(a =>
+      `<div class="attempt-item ${a.ok ? 'success' : 'failure'}">${a.ok ? '✅' : '❌'} [${a.puzzle}] ${a.input} — ${a.time}</div>`
+    ).join('') || '<span style="color:var(--muted)">Nenhuma tentativa ainda.</span>';
+  }
+  renderHints();
+}
+
+function renderHints() {
+  const sc = scenarios[state.activeScenario];
+  const container = el('hintsContainer');
+  if (!container) return;
+  container.innerHTML = sc.hints.map((h, i) => {
+    const unlocked = state.hintLevel[`p${i + 1}`] > 0;
+    return `<div class="hint ${unlocked ? 'unlocked' : 'locked'}">
+      <strong>Dica ${i + 1}${unlocked ? '' : ' 🔒'}:</strong> ${unlocked ? h : 'Usa o botão de dica no puzzle correspondente para desbloquear.'}
+    </div>`;
+  }).join('');
+}
+
+function giveHint(puzzle) {
+  const sc = scenarios[state.activeScenario];
+  const idx = parseInt(puzzle.replace('p', '')) - 1;
+  if (state.hintLevel[puzzle] === 0) {
+    state.hintLevel[puzzle] = 1;
+    state.score = Math.max(0, state.score - (state.difficulty === 'hard' ? 20 : state.difficulty === 'easy' ? 5 : 10));
+    save();
+    render();
+  }
+  alert(`💡 Dica: ${sc.hints[idx]}`);
+}
+
+function logAttempt(puzzle, input, ok) {
+  state.attempts.push({ puzzle, input, ok, time: new Date().toLocaleTimeString('pt-PT') });
+  save();
+  render();
+}
+
+function showResult(id, ok, msg) {
+  const div = el(id);
+  if (!div) return;
+  div.className = `solver-result ${ok ? 'ok' : 'fail'}`;
+  div.textContent = (ok ? '✅ ' : '❌ ') + msg;
+  div.classList.remove('hidden');
+}
+
+function points() {
+  return state.difficulty === 'hard' ? 30 : state.difficulty === 'easy' ? 10 : 20;
+}
+
+function checkP1() {
+  const sc = scenarios[state.activeScenario];
+  const ok = norm(el('p1code').value) === norm(sc.p1code) && norm(el('p1sector').value) === norm(sc.p1sector);
+  if (ok && !state.solved.p1) { state.solved.p1 = true; state.score += points(); }
+  logAttempt('P1', `${el('p1code').value} / ${el('p1sector').value}`, ok);
+  showResult('resultP1', ok, ok ? 'Código correto! Acesso ao terminal concedido.' : 'Combinação incorreta. Tenta novamente.');
+}
+
+function checkP2() {
+  const ans = norm(el('p2input').value);
+  const ok = ans.includes('SISTEMAS') && ans.includes('0300');
+  if (ok && !state.solved.p2) { state.solved.p2 = true; state.score += points(); }
+  logAttempt('P2', el('p2input').value, ok);
+  showResult('resultP2', ok, ok ? 'Log identificado corretamente!' : 'Resposta incorreta. A frase deve mencionar quem e a que horas.');
+}
+
+function checkP3() {
+  const sc = scenarios[state.activeScenario];
+  const ok = norm(el('p3select').value) === norm(sc.p3);
+  if (ok && !state.solved.p3) { state.solved.p3 = true; state.score += points(); }
+  logAttempt('P3', el('p3select').value, ok);
+  showResult('resultP3', ok, ok ? 'Substância identificada corretamente!' : 'Substância incorreta.');
+}
+
+function checkP4() {
+  const sc = scenarios[state.activeScenario];
+  const ok = norm(el('p4select').value) === norm(sc.p4);
+  if (ok && !state.solved.p4) { state.solved.p4 = true; state.score += points(); }
+  logAttempt('P4', el('p4select').value, ok);
+  showResult('resultP4', ok, ok ? 'Credencial corretamente identificada!' : 'Proprietário incorreto.');
+}
+
+function checkP5() {
+  const sc = scenarios[state.activeScenario];
+  const ok = norm(el('p5select').value) === norm(sc.p5);
+  if (ok && !state.solved.p5) { state.solved.p5 = true; state.score += points(); }
+  logAttempt('P5', el('p5select').value, ok);
+  showResult('resultP5', ok, ok ? 'Local do vetor identificado!' : 'Local incorreto.');
+}
+
+function checkFinal() {
+  const sc = scenarios[state.activeScenario];
+  const ok =
+    norm(el('finalCulprit').value) === norm(sc.culprit) &&
+    norm(el('finalSubstance').value) === norm(sc.substance) &&
+    norm(el('finalLocation').value) === norm(sc.location);
+  if (ok) { state.score += state.difficulty === 'hard' ? 100 : state.difficulty === 'easy' ? 30 : 50; save(); }
+  logAttempt('FINAL', `${el('finalCulprit').value} / ${el('finalSubstance').value} / ${el('finalLocation').value}`, ok);
+  showResult('resultFinal', ok,
+    ok ? `🎉 Caso resolvido! Culpado: ${sc.culprit} | Substância: ${sc.substance} | Local: ${sc.location}` :
+         'Solução incorreta. Revê as pistas e tenta novamente.');
+}
+
+/* ===== TIMER ===== */
+el('btnStartTimer').addEventListener('click', () => {
+  if (state.timerRunning) return;
+  state.timerRunning = true;
+  state.timerHandle = setInterval(() => {
+    state.timer++;
+    const tv = el('timerDisplay');
+    tv.textContent = new Date(state.timer * 1000).toISOString().slice(14, 19);
+    tv.className = 'timer-value' + (state.timer > 600 ? ' critical' : state.timer > 300 ? ' warning' : '');
+    save();
+  }, 1000);
+});
+
+el('btnStopTimer').addEventListener('click', () => {
+  clearInterval(state.timerHandle);
+  state.timerRunning = false;
+});
+
+el('btnResetTimer').addEventListener('click', () => {
+  clearInterval(state.timerHandle);
+  state.timerRunning = false;
+  state.timer = 0;
+  el('timerDisplay').textContent = '00:00';
+  el('timerDisplay').className = 'timer-value';
+  save();
+});
+
+/* ===== DIFICULDADE ===== */
+document.querySelectorAll('.difficulty-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.difficulty = btn.dataset.diff;
+    save();
+    render();
+  });
+});
+
+/* ===== CARROSSEL ===== */
+let carouselIndex = 0;
+
+function updateCarousel() {
+  const cards = document.querySelectorAll('.card-3d');
+  const total = cards.length;
+  cards.forEach((card, i) => {
+    const offset = i - carouselIndex;
+    card.classList.toggle('active', offset === 0);
+    card.classList.toggle('inactive', offset !== 0);
+    card.style.transform = `translateX(-50%) translateY(-50%) translateZ(${offset === 0 ? 0 : -120}px) rotateY(${offset * 30}deg) translateX(${offset * 55}%)`;
+    card.style.opacity = Math.abs(offset) > 1 ? '0' : offset === 0 ? '1' : '0.55';
+    card.style.zIndex = total - Math.abs(offset);
+  });
+  document.querySelectorAll('.nav-indicator-dot').forEach((dot, i) => dot.classList.toggle('active', i === carouselIndex));
+}
+
+function carouselNext() {
+  carouselIndex = (carouselIndex + 1) % document.querySelectorAll('.card-3d').length;
+  updateCarousel();
+}
+
+function carouselPrev() {
+  const total = document.querySelectorAll('.card-3d').length;
+  carouselIndex = (carouselIndex - 1 + total) % total;
+  updateCarousel();
+}
+
+/* ===== DOSSIÊ MODAL ===== */
+const dossies = [
+  { title: 'Arquiteto de Sistemas', body: '<p><strong>Acesso:</strong> Terminal Central às 03:00.</p><p><strong>Nota:</strong> O log de acesso foi registado com a sua credencial ativa.</p>' },
+  { title: 'Engenheiro de Segurança', body: '<p><strong>Declaração:</strong> Perdi o meu cartão às 02:30 no refeitório.</p><p><strong>Nota:</strong> A sua credencial foi usada 30 minutos depois do desaparecimento.</p>' },
+  { title: 'Geneticista', body: '<p><strong>Alibi:</strong> Videoconferência externa confirmada das 00:00 às 05:00.</p><p><strong>Nota:</strong> Cenário BETA — suspeito principal diferente.</p>' }
+];
+
+function openDossie(index) {
+  el('dossieTitle').textContent = dossies[index].title;
+  el('dossieBody').innerHTML = dossies[index].body;
+  el('dossieBackdrop').classList.add('open');
+}
+
+function closeDossie(e) {
+  if (e.target === el('dossieBackdrop')) el('dossieBackdrop').classList.remove('open');
+}
+
+function closeDossieBtn() {
+  el('dossieBackdrop').classList.remove('open');
+}
+
+/* ===== NAV DOTS ===== */
+function buildNavDots() {
+  const total = document.querySelectorAll('.card-3d').length;
+  const container = el('navDots');
+  container.innerHTML = '';
+  for (let i = 0; i < total; i++) {
+    const dot = document.createElement('span');
+    dot.className = 'nav-indicator-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => { carouselIndex = i; updateCarousel(); });
+    container.appendChild(dot);
+  }
+}
+
+/* ===== UTILITÁRIOS ===== */
+function clearHistory() {
+  if (confirm('Limpar todo o histórico de tentativas?')) {
+    state.attempts = [];
+    save();
+    render();
+  }
+}
+
+function resetGame() {
+  if (confirm('Reiniciar o jogo? A pontuação e histórico serão apagados.')) {
+    clearInterval(state.timerHandle);
+    state.timerRunning = false;
+    state.timer = 0;
+    state.score = 0;
+    state.attempts = [];
+    state.solved = { p1: false, p2: false, p3: false, p4: false, p5: false };
+    state.hintLevel = { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0 };
+    localStorage.removeItem('quimeraState');
+    render();
+    ['resultP1','resultP2','resultP3','resultP4','resultP5','resultFinal'].forEach(id => {
+      const e = el(id); if (e) e.classList.add('hidden');
+    });
+  }
+}
+
+/* ===== INIT ===== */
+load();
+buildNavDots();
+updateCarousel();
+render();
