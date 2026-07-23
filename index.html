@@ -2,7 +2,7 @@
 <html lang="pt-PT">
 <head>
   <meta charset="UTF-8" />
-  <title>Carrossel 3D – Quimera</title>
+  <title>Cenário ALPHA – Quimera (Carrossel 3D)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
@@ -18,14 +18,13 @@
 
     body {
       margin: 0;
-      padding: 0;
+      padding: 0 16px 40px;
       background: radial-gradient(circle at top, #1c2333 0%, #0a0f1a 55%, #05060b 100%);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: #eef3ff;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
       min-height: 100vh;
     }
 
@@ -35,6 +34,57 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: #9fb7ff;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #9fb7ff;
+      margin-bottom: 8px;
+    }
+
+    p {
+      line-height: 1.4;
+    }
+
+    .section {
+      width: 100%;
+      max-width: 960px;
+      margin: 16px auto;
+      background: rgba(9, 13, 25, 0.75);
+      border-radius: 16px;
+      padding: 16px 18px;
+      border: 1px solid rgba(130, 160, 230, 0.4);
+    }
+
+    .section table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.85rem;
+    }
+
+    .section th,
+    .section td {
+      border: 1px solid rgba(120, 140, 210, 0.5);
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    .section th {
+      background: rgba(22, 32, 56, 0.9);
+      color: #dbe5ff;
+    }
+
+    .section td {
+      background: rgba(11, 16, 28, 0.9);
+      color: #cbd7ff;
+    }
+
+    .section strong {
+      color: #dbe5ff;
     }
 
     .carousel-3d-wrapper {
@@ -199,8 +249,6 @@
       box-shadow: 0 0 18px rgba(120, 180, 255, 0.85);
     }
 
-    /* Navegação */
-
     .carousel-nav {
       display: flex;
       align-items: center;
@@ -255,8 +303,6 @@
       background: rgba(160, 210, 255, 0.95);
       transform: scale(1.6);
     }
-
-    /* Modal de dossiê */
 
     .dossie-modal-backdrop {
       position: fixed;
@@ -318,6 +364,54 @@
       padding-right: 4px;
     }
 
+    /* Validador de solução */
+    .solver-form {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .solver-form label {
+      font-size: 0.85rem;
+      color: #cbd7ff;
+    }
+
+    .solver-form select {
+      background: #0a1020;
+      color: #e0e7ff;
+      border-radius: 999px;
+      border: 1px solid rgba(130, 160, 230, 0.7);
+      padding: 4px 10px;
+      font-size: 0.85rem;
+    }
+
+    .solver-btn {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(145, 180, 255, 0.8);
+      background: linear-gradient(135deg, #151b2a, #283455);
+      color: #dfe6ff;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .solver-result {
+      margin-top: 8px;
+      font-size: 0.85rem;
+    }
+
+    .solver-result.ok {
+      color: #8ef0a0;
+    }
+
+    .solver-result.fail {
+      color: #ff9d9d;
+    }
+
     @media (max-width: 768px) {
       :root {
         --card-width: 240px;
@@ -346,86 +440,167 @@
   </style>
 </head>
 <body>
-  <h1>Cenário ALPHA – Papéis Ocultos</h1>
+  <h1>Cenário ALPHA ativo – Laboratório Quimera</h1>
 
+  <!-- Seção de narrativa original -->
+  <section class="section">
+    <h2>Narrativa do cenário</h2>
+    <p>Os jogadores assumem papéis de cientistas presos no laboratório Quimera após um lockdown de emergência.</p>
+    <p>Escolhe o número de participantes e gera os papéis ocultos.</p>
+    <p>Na versão digital, podes deduzir o código pelo micro-puzzle abaixo ou usar a dica.</p>
+  </section>
+
+  <!-- Micro-puzzle e tabela de pistas -->
+  <section class="section">
+    <h2>Micro‑puzzle lógico</h2>
+    <p>A leitura correta é <strong>Q‑17</strong> e aponta para <strong>Armazenamento Térmico</strong>.</p>
+    <p>A interface aceita frases que mencionem <strong>"SISTEMAS"</strong> e <strong>"03:00"</strong>.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Categoria</th>
+          <th>Pista</th>
+          <th>Significado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Origem</td>
+          <td>Armazenamento Térmico</td>
+          <td>A amostra original foi retirada do frigorífico central.</td>
+        </tr>
+        <tr>
+          <td>Log</td>
+          <td>Arquiteto de Sistemas / 03:00</td>
+          <td>Os logs apontam para atividade no terminal.</td>
+        </tr>
+        <tr>
+          <td>Agente</td>
+          <td>Neurotoxina B</td>
+          <td>A substância ativa identificada não é um vírus tradicional.</td>
+        </tr>
+        <tr>
+          <td>Chave</td>
+          <td>Engenheiro de Segurança</td>
+          <td>A credencial usada foi desviada.</td>
+        </tr>
+        <tr>
+          <td>Alvo</td>
+          <td>Sala de Descontaminação</td>
+          <td>O mecanismo foi preparado para esse compartimento.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Carrossel 3D de papéis -->
   <div class="carousel-3d-wrapper" id="carouselWrapper">
     <div class="carousel-3d" id="carousel3d">
-      <!-- Card 0 -->
+      <!-- Engenheiro de Segurança -->
       <article class="card-3d" data-index="0">
         <header class="card-3d-header">
           <div class="card-3d-avatar"></div>
           <div class="card-3d-title-block">
             <div class="card-3d-role">Engenheiro de Segurança</div>
-            <div class="card-3d-name">Thiago Leite</div>
-            <div class="card-3d-tagline">Responsável pelos protocolos de acesso e SCIE.</div>
+            <div class="card-3d-name">Dossiê do Engenheiro</div>
+            <div class="card-3d-tagline">Chave para o desvio de credenciais e acesso físico.</div>
           </div>
         </header>
         <section class="card-3d-body">
           <h3>Dossiê resumido</h3>
-          <p>Perdeu o cartão às 02:30 no refeitório, fato crítico para a investigação do lockdown em Quimera.</p>
-          <p>Monitoriza sistemas de combate a incêndio e acessos em áreas críticas.</p>
+          <p>"Perdi o meu cartão às 02:30 no refeitório."</p>
+          <p>Responsável por credenciais de acesso; a perda do cartão abre margem para uso indevido na Sala de Descontaminação.</p>
         </section>
         <footer class="card-3d-footer">
-          <span>Código interno: SEG-01</span>
+          <span>Papel: Chave de acesso</span>
           <button type="button" class="open-dossie-btn">Abrir dossiê</button>
         </footer>
       </article>
 
-      <!-- Card 1 -->
+      <!-- Arquiteto de Sistemas -->
       <article class="card-3d" data-index="1">
         <header class="card-3d-header">
           <div class="card-3d-avatar"></div>
           <div class="card-3d-title-block">
             <div class="card-3d-role">Arquiteto de Sistemas</div>
-            <div class="card-3d-name">Xavier Costa</div>
-            <div class="card-3d-tagline">Domina a infraestrutura digital do laboratório.</div>
+            <div class="card-3d-name">Log de Sistemas / 03:00</div>
+            <div class="card-3d-tagline">Responsável pelos terminais e pelo fluxo digital do laboratório.</div>
           </div>
         </header>
         <section class="card-3d-body">
           <h3>Dossiê resumido</h3>
-          <p>Logs apontam atividade no terminal às 03:00; suspeito na manipulação dos sistemas de contenção.</p>
-          <p>Tem acesso privilegiado à rede interna e aos módulos de armazenamento térmico.</p>
+          <p>Os logs apontam para atividade no terminal às 03:00, ligando o Arquiteto de Sistemas ao disparo de protocolos de segurança.</p>
+          <p>Tem acesso privilegiado à infraestrutura digital ligada ao Armazenamento Térmico e ao mecanismo de descontaminação.</p>
         </section>
         <footer class="card-3d-footer">
-          <span>Código interno: SYS-03</span>
+          <span>Papel: Principal suspeito do cenário</span>
           <button type="button" class="open-dossie-btn">Abrir dossiê</button>
         </footer>
       </article>
 
-      <!-- Card 2 -->
+      <!-- Geneticista -->
       <article class="card-3d" data-index="2">
         <header class="card-3d-header">
           <div class="card-3d-avatar"></div>
           <div class="card-3d-title-block">
             <div class="card-3d-role">Geneticista</div>
-            <div class="card-3d-name">Helena Duarte</div>
-            <div class="card-3d-tagline">Especialista em amostras experimentais e Neurotoxina B.</div>
+            <div class="card-3d-name">Gestora de amostras</div>
+            <div class="card-3d-tagline">Ligada a Solvente C e à gestão de Armazenamento Térmico.</div>
           </div>
         </header>
         <section class="card-3d-body">
           <h3>Dossiê resumido</h3>
-          <p>Controla as amostras em Armazenamento Térmico; conhece bem o comportamento de Solvente C.</p>
-          <p>Registos indicam movimentação de materiais pouco antes do lockdown.</p>
+          <p>Controla amostras de alta criticidade, incluindo Solvente C e Neurotoxina B, com movimentações ligadas a Armazenamento Térmico.</p>
+          <p>Podem existir cenários alternativos em que o Geneticista é o culpado ou nenhum agente direto é identificado.</p>
         </section>
         <footer class="card-3d-footer">
-          <span>Código interno: GEN-07</span>
+          <span>Papel: Possível culpado alternativo</span>
           <button type="button" class="open-dossie-btn">Abrir dossiê</button>
         </footer>
       </article>
-
-      <!-- Adicione mais cards conforme necessário -->
     </div>
   </div>
 
   <div class="carousel-nav">
-    <button type="button" class="nav-btn" id="prevBtn">
-      ← Anterior
-    </button>
+    <button type="button" class="nav-btn" id="prevBtn">← Anterior</button>
     <div class="nav-indicators" id="navIndicators"></div>
-    <button type="button" class="nav-btn" id="nextBtn">
-      Próximo →
-    </button>
+    <button type="button" class="nav-btn" id="nextBtn">Próximo →</button>
   </div>
+
+  <!-- Seção de resoluções possíveis + validador -->
+  <section class="section">
+    <h2>Resoluções do cenário</h2>
+    <p>Cenários possíveis (podem variar conforme o grupo ou versão da história):</p>
+    <p>Culpado: <strong>Arquiteto de Sistemas</strong>. Substância: <strong>Neurotoxina B</strong>. Local: <strong>Sala de Descontaminação</strong>.</p>
+    <p>Culpado: <strong>Geneticista</strong>. Substância: <strong>Solvente C</strong>. Local: <strong>Armazenamento Térmico</strong>.</p>
+    <p>Culpado: <strong>Nenhum</strong>. Substância: <strong>Neurotoxina B</strong>. Local: <strong>Sala de Reatores</strong>.</p>
+
+    <div class="solver-form">
+      <label for="culpadoSelect">Culpado:</label>
+      <select id="culpadoSelect">
+        <option>Arquiteto de Sistemas</option>
+        <option>Geneticista</option>
+        <option>Nenhum</option>
+      </select>
+
+      <label for="substanciaSelect">Substância:</label>
+      <select id="substanciaSelect">
+        <option>Neurotoxina B</option>
+        <option>Solvente C</option>
+      </select>
+
+      <label for="localSelect">Local:</label>
+      <select id="localSelect">
+        <option>Sala de Descontaminação</option>
+        <option>Armazenamento Térmico</option>
+        <option>Sala de Reatores</option>
+      </select>
+
+      <button type="button" class="solver-btn" id="solverBtn">Verificar solução</button>
+    </div>
+    <div id="solverResult" class="solver-result"></div>
+  </section>
 
   <!-- Modal de dossiê detalhado -->
   <div class="dossie-modal-backdrop" id="dossieBackdrop">
@@ -434,14 +609,11 @@
         <div class="dossie-modal-title" id="dossieTitle">Dossiê detalhado</div>
         <button class="dossie-modal-close" id="closeDossieBtn">&times;</button>
       </div>
-      <div class="dossie-modal-body" id="dossieBody">
-        <!-- Conteúdo é preenchido via JS -->
-      </div>
+      <div class="dossie-modal-body" id="dossieBody"></div>
     </div>
   </div>
 
   <script>
-    // Configuração básica
     const carousel = document.getElementById("carousel3d");
     const cards = Array.from(document.querySelectorAll(".card-3d"));
     const prevBtn = document.getElementById("prevBtn");
@@ -449,39 +621,37 @@
     const navIndicators = document.getElementById("navIndicators");
 
     let activeIndex = 0;
-    const angleStep = 26; // graus de rotateY entre cards
+    const angleStep = 26;
     const gap = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--card-gap"));
     const depth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--depth"));
 
-    // Dados de dossiê detalhado (exemplo, substitua pelo conteúdo real)
     const dossies = [
       {
         titulo: "Dossiê – Engenheiro de Segurança",
         corpo: `
-          <p><strong>Perfil:</strong> Responsável pelo controlo de acessos físicos e sistemas de combate a incêndio em áreas críticas do laboratório Quimera.</p>
-          <p><strong>Evento-chave:</strong> Declara ter perdido o cartão às 02:30 no refeitório, o que abre uma janela de oportunidade para uso indevido da credencial.</p>
-          <p><strong>Pistas:</strong> Registos de acesso mostram credenciais de segurança usadas para preparar o mecanismo na Sala de Descontaminação.</p>
+          <p><strong>Nota direta:</strong> "Perdi o meu cartão às 02:30 no refeitório."</p>
+          <p><strong>Perfil:</strong> Responsável por credenciais de acesso e sistemas físicos de proteção.</p>
+          <p><strong>Ligação ao puzzle:</strong> A credencial desviada é usada na preparação do mecanismo para a Sala de Descontaminação.</p>
         `
       },
       {
         titulo: "Dossiê – Arquiteto de Sistemas",
         corpo: `
-          <p><strong>Perfil:</strong> Administra servidores e terminais centrais, incluindo o módulo de Armazenamento Térmico.</p>
-          <p><strong>Evento-chave:</strong> Logs de sistema indicam atividade suspeita às 03:00 no terminal principal, ligada ao lockdown de emergência.</p>
-          <p><strong>Pistas:</strong> Combinação de referência a "SISTEMAS" e horário 03:00 sugere participação direta na manipulação de protocolos de segurança.</p>
+          <p><strong>Perfil:</strong> Administra o terminal central, incluindo módulo de Armazenamento Térmico.</p>
+          <p><strong>Log chave:</strong> Atividade identificada às 03:00, associada a manipulação de protocolos de segurança.</p>
+          <p><strong>Ligação ao puzzle:</strong> A combinação de "SISTEMAS" e "03:00" aponta para este papel como principal suspeito.</p>
         `
       },
       {
         titulo: "Dossiê – Geneticista",
         corpo: `
-          <p><strong>Perfil:</strong> Gestora de amostras biológicas de alto risco, incluindo Neurotoxina B e Solvente C.</p>
-          <p><strong>Evento-chave:</strong> Foi vista nas proximidades do Armazenamento Térmico pouco antes do disparo dos sensores ambientais.</p>
-          <p><strong>Pistas:</strong> Correlação entre movimentação de amostras, escolha da Sala de Reatores e configuração do mecanismo de descontaminação.</p>
+          <p><strong>Perfil:</strong> Gestora de amostras, incluindo Neurotoxina B e Solvente C, com acesso ao Armazenamento Térmico.</p>
+          <p><strong>Cenários alternativos:</strong> Em determinadas configurações, o Geneticista pode ser o culpado ou nenhum culpado direto é identificado.</p>
+          <p><strong>Ligação ao puzzle:</strong> As pistas de Origem e Agente ligam o seu trabalho às salas de Armazenamento Térmico e Reatores.</p>
         `
       }
     ];
 
-    // Cria indicadores
     cards.forEach((_, idx) => {
       const dot = document.createElement("div");
       dot.className = "nav-indicator-dot" + (idx === activeIndex ? " active" : "");
@@ -507,20 +677,11 @@
     function layoutCards() {
       cards.forEach((card, idx) => {
         const offset = idx - activeIndex;
-
-        // rotateY para efeito coverflow
         const rotateY = offset * angleStep;
-
-        // translateX para afastar os cards lateralmente
         const translateX = offset * (gap + 40);
-
-        // translateZ para profundidade (cards mais distantes "afundam")
         const translateZ = -Math.abs(offset) * depth;
-
-        // escala dinâmica (card central maior)
         const scale = idx === activeIndex ? 1 : (1 - Math.min(Math.abs(offset) * 0.09, 0.25));
 
-        // opacidade ajustável
         card.style.transform = `
           translate3d(${translateX}px, -50%, ${translateZ}px)
           rotateY(${rotateY}deg)
@@ -529,8 +690,6 @@
 
         card.classList.toggle("active", idx === activeIndex);
         card.classList.toggle("inactive", idx !== activeIndex);
-
-        // controla ordem de empilhamento para parecer 3D
         card.style.zIndex = String(100 - Math.abs(offset));
       });
     }
@@ -538,7 +697,6 @@
     prevBtn.addEventListener("click", () => setActiveIndex(activeIndex - 1));
     nextBtn.addEventListener("click", () => setActiveIndex(activeIndex + 1));
 
-    // Suporte a scroll do mouse (wheel horizontal/vertical)
     let wheelDebounce = null;
     carousel.addEventListener("wheel", (evt) => {
       evt.preventDefault();
@@ -553,10 +711,8 @@
       }
     }, { passive: false });
 
-    // Suporte a toque (swipe)
     let touchStartX = null;
     let touchEndX = null;
-
     carousel.addEventListener("touchstart", (evt) => {
       if (evt.touches.length === 1) {
         touchStartX = evt.touches[0].clientX;
@@ -584,7 +740,6 @@
       touchEndX = null;
     });
 
-    // Clique em card abre dossiê
     const backdrop = document.getElementById("dossieBackdrop");
     const dossieTitleEl = document.getElementById("dossieTitle");
     const dossieBodyEl = document.getElementById("dossieBody");
@@ -602,9 +757,7 @@
     }
 
     cards.forEach((card, idx) => {
-      // clique em qualquer lugar do card
       card.addEventListener("click", (evt) => {
-        // se clicou em botão específico, também abre
         if (evt.target.closest(".open-dossie-btn") || evt.target.closest(".card-3d")) {
           openDossie(idx);
         }
@@ -618,8 +771,38 @@
       }
     });
 
-    // Inicializa layout
     layoutCards();
+
+    // Validador de solução
+    const solverBtn = document.getElementById("solverBtn");
+    const solverResult = document.getElementById("solverResult");
+
+    const correctSolution = {
+      culpado: "Arquiteto de Sistemas",
+      substancia: "Neurotoxina B",
+      local: "Sala de Descontaminação"
+    };
+
+    solverBtn.addEventListener("click", () => {
+      const culpado = document.getElementById("culpadoSelect").value;
+      const substancia = document.getElementById("substanciaSelect").value;
+      const local = document.getElementById("localSelect").value;
+
+      const ok =
+        culpado === correctSolution.culpado &&
+        substancia === correctSolution.substancia &&
+        local === correctSolution.local;
+
+      if (ok) {
+        solverResult.textContent = "✔ Combinação correta para o cenário ALPHA: o Arquiteto de Sistemas usou Neurotoxina B na Sala de Descontaminação.";
+        solverResult.classList.remove("fail");
+        solverResult.classList.add("ok");
+      } else {
+        solverResult.textContent = "✖ Essa combinação não corresponde ao cenário principal. Explora as pistas (Origem, Log, Agente, Chave, Alvo) e tenta novamente.";
+        solverResult.classList.remove("ok");
+        solverResult.classList.add("fail");
+      }
+    });
   </script>
 </body>
 </html>
