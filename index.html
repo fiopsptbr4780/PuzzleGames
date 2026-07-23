@@ -195,54 +195,277 @@
       header, .card, .map-lab, .summary-bar { padding: var(--space-5); }
       .btn-row { grid-template-columns: 1fr; }
     }
-    #puzzle2-grid {
-      display: inline-grid;
-      grid-template-columns: repeat(32, 1.8rem);
-      gap: 2px;
-      margin-bottom: 1rem;
+
+    /* Tabs de Modo de Jogo */
+    .mode-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--border);
     }
-    .puzzle2-cell {
-      width: 1.8rem;
-      height: 1.8rem;
+    .mode-tabs button {
+      width: auto;
+      padding: 12px 20px;
+      margin: 0;
+      background: transparent;
+      color: var(--primary);
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    .mode-tabs button.active {
+      border-bottom-color: var(--primary);
+      background: rgba(11, 107, 111, 0.05);
+    }
+    .mode-tabs button:hover {
+      background: rgba(11, 107, 111, 0.08);
+    }
+
+    /* Galeria 3D */
+    #coverflow-container {
+      perspective: 1600px;
+      width: 100%;
+      height: 500px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid #ccc;
-      font-family: monospace;
-      font-size: 1.1rem;
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #f5f2ec 0%, #f1ece4 100%);
+    }
+    .coverflow-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .character-card {
+      position: absolute;
+      width: 300px;
+      height: 400px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
       cursor: pointer;
-      user-select: none;
-      background-color: #fff;
+      transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      transform-style: preserve-3d;
+      overflow: hidden;
+      border: 2px solid var(--border);
     }
-    .puzzle2-cell.selected { background-color: #cde4ff; }
-    .puzzle2-cell.found {
-      background-color: #8bc34a;
-      color: #fff;
+    .character-card.active {
+      z-index: 10;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.3);
     }
-    .puzzle2-cell.found-key {
-      background-color: #ff6b6b;
-      color: #fff;
-      font-weight: bold;
+    .character-avatar {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
     }
-    #puzzle2-words span {
-      margin-right: 0.5rem;
+    .character-info {
+      padding: 20px;
+      text-align: center;
+    }
+    .character-info h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    .character-info p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .character-role {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary);
+      background: rgba(11, 107, 111, 0.1);
+      padding: 6px 12px;
+      border-radius: 20px;
       display: inline-block;
-      padding: 0.35rem 0.7rem;
+    }
+
+    /* Modo Clássico - Lista */
+    .dossier-list {
+      display: grid;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .dossier-card {
+      padding: 20px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .dossier-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow);
+    }
+    .dossier-card.selected {
+      border-color: var(--primary);
+      background: rgba(11, 107, 111, 0.05);
+    }
+    .dossier-card h3 {
+      margin: 0 0 8px 0;
+      color: var(--primary);
+    }
+    .dossier-card p {
+      margin: 6px 0;
+      font-size: 14px;
+    }
+
+    /* Modal de Dossiê Detalhado */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.show {
+      display: flex;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--muted);
+      width: auto;
+      padding: 0;
+      margin: 0;
+    }
+    .modal-close:hover {
+      color: var(--text);
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .modal-avatar {
+      font-size: 60px;
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-title {
+      flex: 1;
+    }
+    .modal-title h2 {
+      font-size: 24px;
+      margin: 0 0 6px 0;
+    }
+    .modal-title p {
+      margin: 0;
+      color: var(--muted);
+    }
+    .modal-body {
+      display: grid;
+      gap: 15px;
+    }
+    .modal-section {
+      padding: 15px;
+      background: var(--surface-2);
+      border-radius: 12px;
+      border-left: 4px solid var(--primary);
+    }
+    .modal-section h4 {
+      margin: 0 0 8px 0;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .modal-section p {
+      margin: 0;
+      font-size: 14px;
+    }
+    .affiliation-hidden {
+      background: var(--surface);
+      border: 2px dashed var(--muted);
+      padding: 12px;
       border-radius: 8px;
-      background: #f0f0f0;
-      transition: all 0.3s ease;
+      text-align: center;
+      color: var(--muted);
+      font-style: italic;
     }
-    #puzzle2-words span.found {
-      text-decoration: line-through;
-      color: #666;
-      background: rgba(139, 195, 74, 0.2);
+
+    /* Objetivos Visuais */
+    .objectives-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
     }
-    #puzzle2-words span.found-key {
-      text-decoration: none;
-      color: #fff;
-      background: #ff6b6b;
-      font-weight: bold;
-      box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+    .objective-card {
+      padding: 15px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .objective-card.completed {
+      border-color: var(--success);
+      background: rgba(45, 110, 30, 0.05);
+    }
+    .objective-card.hidden {
+      border-color: var(--muted);
+      background: var(--surface-2);
+      opacity: 0.6;
+    }
+    .objective-icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    .objective-title {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .objective-desc {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Estágio de Jogo */
+    .game-stage {
+      display: none;
+    }
+    .game-stage.active {
+      display: block;
     }
   </style>
 </head>
@@ -251,7 +474,7 @@
     <header>
       <h1>Projeto Quimera: Dilema do Operativo</h1>
       <p class="small-text">
-        Escape Room de Bolso / Jogo de Investigação Tátil e Dedução Social – Versão Engenharia.
+        Escape Room de Bolso / Jogo de Investigação Tátil e Dedução Social – Versão Digital.
       </p>
     </header>
 
@@ -277,25 +500,47 @@
         <p class="small-text">
           Os jogadores assumem papéis de cientistas presos no laboratório Quimera após um lockdown de emergência.
         </p>
-        <p class="small-text" style="margin-top: 12px;">
-          Áreas-chave: Armazenamento Térmico, Sala de Descontaminação, Zona de Descontaminação,
-          Refeitório, Sala de Reatores e Terminal Central.
-        </p>
 
-        <h3 style="margin-top: 18px;">Configurar número de jogadores e dossiês</h3>
-        <label for="numJogadores">Número de jogadores</label>
-        <select id="numJogadores">
-          <option value="3">3 jogadores</option>
-          <option value="4" selected>4 jogadores</option>
-          <option value="5">5 jogadores</option>
-          <option value="6">6 jogadores</option>
-        </select>
-        <button id="btnGerarDossies" type="button">Gerar Dossiês Ocultos</button>
-        <p class="small-text" id="dossiesInfo" style="margin-top: 8px;">
-          Escolhe o número de participantes e gera os papéis ocultos.
-        </p>
+        <!-- Tabs de Modo -->
+        <div class="mode-tabs">
+          <button class="active" data-mode="classic">📋 Modo Clássico</button>
+          <button data-mode="3d">🎨 Galeria 3D</button>
+        </div>
 
-        <div id="listaDossies" style="margin-top: 20px; display: grid; gap: 12px;"></div>
+        <!-- Modo Clássico -->
+        <div id="mode-classic" class="game-stage active">
+          <h3 style="margin-top: 18px;">Configurar número de jogadores e dossiês</h3>
+          <label for="numJogadores">Número de jogadores</label>
+          <select id="numJogadores">
+            <option value="3">3 jogadores</option>
+            <option value="4" selected>4 jogadores</option>
+            <option value="5">5 jogadores</option>
+            <option value="6">6 jogadores</option>
+          </select>
+          <button id="btnGerarDossies" type="button">Gerar Dossiês Ocultos</button>
+          <p class="small-text" id="dossiesInfo" style="margin-top: 8px;">
+            Escolhe o número de participantes e gera os papéis ocultos.
+          </p>
+          <div id="listaDossies" class="dossier-list"></div>
+        </div>
+
+        <!-- Modo 3D -->
+        <div id="mode-3d" class="game-stage" style="display: none;">
+          <h3 style="margin-top: 18px;">Galeria de Personagens</h3>
+          <p class="small-text">
+            Clique nos personagens para conhecê-los. A afiliação será revelada apenas no final do jogo.
+          </p>
+          <div id="coverflow-container">
+            <div class="coverflow-wrapper" id="coverflowWrapper"></div>
+          </div>
+          <div style="text-align: center; margin-top: 20px;">
+            <p class="small-text" id="character-hint">Clique nos cartões para explorar</p>
+          </div>
+          
+          <!-- Objetivos 3D -->
+          <h3 style="margin-top: 24px;">Seus Objetivos</h3>
+          <div class="objectives-grid" id="objectivesGrid"></div>
+        </div>
       </div>
     </section>
 
@@ -355,20 +600,6 @@
           </div>
           <div id="hint2" class="notif hidden"></div>
           <div id="p2Resultado" class="puzzle-result hidden"></div>
-
-          <h3 style="margin-top: 24px;">Sopa de Letras – Registo de Terminal</h3>
-          <p class="small-text" style="margin-bottom: 12px;">
-            <strong>Palavras chave:</strong> encontra SISTEMA, 03:00 e ACESSOU para completar o puzzle.
-          </p>
-          <div id="puzzle2-grid"></div>
-          <h4>Palavras a encontrar</h4>
-          <div id="puzzle2-words" class="small-text" style="margin-top: 8px;"></div>
-          <p class="small-text" id="puzzle2-status" style="margin-top: 8px;">
-            Palavras encontradas: 0 / 24
-          </p>
-          <p class="small-text" id="puzzle2-key-status" style="margin-top: 8px; color: #ff6b6b; font-weight: bold;">
-            Palavras chave encontradas: 0 / 3
-          </p>
         </div>
 
         <!-- Envelope 3 -->
@@ -547,6 +778,38 @@
         </div>
       </div>
     </section>
+
+    <!-- Modal para Dossiê Detalhado -->
+    <div id="dossierModal" class="modal">
+      <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <div class="modal-header">
+          <div class="modal-avatar" id="modalAvatar">👨‍🔬</div>
+          <div class="modal-title">
+            <h2 id="modalName">Nome</h2>
+            <p id="modalRole">Função</p>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section">
+            <h4>Função Oficial</h4>
+            <p id="modalFunction">—</p>
+          </div>
+          <div class="modal-section">
+            <h4>Nível de Acesso</h4>
+            <p id="modalAccess">—</p>
+          </div>
+          <div class="modal-section">
+            <h4>Pista Pessoal Secreta</h4>
+            <p id="modalClue">—</p>
+          </div>
+          <div class="modal-section">
+            <h4>Afiliação</h4>
+            <p id="modalAffiliation" class="affiliation-hidden">Será revelada no final do jogo</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -554,32 +817,50 @@
       {
         role: 'Arquiteto de Sistemas',
         affiliation: 'Sabotador',
-        clue: 'Conheces os horários do terminal e sabes como alterar logs sem disparar o alarme.'
+        clue: 'Conheces os horários do terminal e sabes como alterar logs sem disparar o alarme.',
+        avatar: '🖥️',
+        access: 'Nível 4',
+        objective: 'Incriminar o Engenheiro de Segurança'
       },
       {
         role: 'Engenheiro de Segurança',
         affiliation: 'Leal',
-        clue: 'Perdeste o teu cartão de acesso às 02:30 no refeitório.'
+        clue: 'Perdeste o teu cartão de acesso às 02:30 no refeitório.',
+        avatar: '🔐',
+        access: 'Nível 5',
+        objective: 'Encontrar o verdadeiro culpado'
       },
       {
         role: 'Chefe de Bioquímica',
         affiliation: 'Leal',
-        clue: 'Sabes que a substância ativa não era um vírus comum e exigia armazenamento controlado.'
+        clue: 'Sabes que a substância ativa não era um vírus comum e exigia armazenamento controlado.',
+        avatar: '🧪',
+        access: 'Nível 3',
+        objective: 'Proteger as amostras'
       },
       {
         role: 'Geneticista',
         affiliation: 'Leal',
-        clue: 'Viste alguém próximo do arquivo de amostras antes do lockdown.'
+        clue: 'Viste alguém próximo do arquivo de amostras antes do lockdown.',
+        avatar: '🧬',
+        access: 'Nível 3',
+        objective: 'Desmascarar o sabotador'
       },
       {
         role: 'Perito de Vantagem',
         affiliation: 'Oportunista',
-        clue: 'Tentas sobreviver e negociar informação sem revelar tudo o que observaste.'
+        clue: 'Tentas sobreviver e negociar informação sem revelar tudo o que observaste.',
+        avatar: '🕵️',
+        access: 'Nível 2',
+        objective: 'Sobreviver e lucrar'
       },
       {
         role: 'Diretor do Lab',
         affiliation: 'Leal',
-        clue: 'Tens acesso parcial à cronologia de incidentes, mas faltam-te dados do turno noturno.'
+        clue: 'Tens acesso parcial à cronologia de incidentes, mas faltam-te dados do turno noturno.',
+        avatar: '👔',
+        access: 'Nível 5',
+        objective: 'Salvar o laboratório'
       }
     ];
 
@@ -645,11 +926,125 @@
 
     const state = {
       activeScenario: 'ALPHA',
-      solved: { p1: false, p2: false, p3: false, p4: false, p5: false }
+      solved: { p1: false, p2: false, p3: false, p4: false, p5: false },
+      currentMode: 'classic',
+      selectedDossier: null,
+      activeCharacter: 0
     };
 
     const $ = (id) => document.getElementById(id);
 
+    // ===== MODO TABS =====
+    document.querySelectorAll('.mode-tabs button').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const mode = e.target.dataset.mode;
+        switchMode(mode);
+      });
+    });
+
+    function switchMode(mode) {
+      state.currentMode = mode;
+      document.querySelectorAll('.game-stage').forEach(el => el.classList.remove('active'));
+      document.querySelector(`#mode-${mode}`).classList.add('active');
+      document.querySelectorAll('.mode-tabs button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === mode);
+      });
+
+      if (mode === '3d') {
+        initCoverflow();
+      }
+    }
+
+    // ===== COVERFLOW 3D =====
+    function initCoverflow() {
+      const wrapper = $('coverflowWrapper');
+      wrapper.innerHTML = '';
+      const list = rolesBase;
+      const n = list.length;
+
+      list.forEach((role, i) => {
+        const card = document.createElement('div');
+        card.className = `character-card ${i === state.activeCharacter ? 'active' : ''}`;
+        card.innerHTML = `
+          <div class="character-avatar">${role.avatar}</div>
+          <div class="character-info">
+            <h3>${role.role}</h3>
+            <p>${role.objective}</p>
+            <div class="character-role">Clique para ver dossiê</div>
+          </div>
+        `;
+        card.addEventListener('click', () => showDossierModal(i));
+        wrapper.appendChild(card);
+      });
+
+      updateCoverflowLayout(n);
+    }
+
+    function updateCoverflowLayout(n) {
+      const cards = document.querySelectorAll('.character-card');
+      const active = state.activeCharacter;
+      const perspective = 1600;
+      const scale = 0.8;
+      const depth = 300;
+
+      cards.forEach((card, i) => {
+        let rel = i - active;
+        if (rel > n / 2) rel -= n;
+        if (rel < -n / 2) rel += n;
+
+        const angle = rel * 25;
+        const tx = rel * 350;
+        const tz = Math.abs(rel) * -depth;
+        const sc = 1 - Math.abs(rel) * 0.2;
+
+        card.style.transform = `translateX(${tx}px) translateZ(${tz}px) rotateY(${angle}deg) scale(${sc})`;
+        card.classList.toggle('active', rel === 0);
+      });
+    }
+
+    // ===== MODAL DOSSIÊ =====
+    function showDossierModal(index) {
+      const role = rolesBase[index];
+      $('modalAvatar').textContent = role.avatar;
+      $('modalName').textContent = role.role;
+      $('modalRole').textContent = role.objective;
+      $('modalFunction').textContent = role.role;
+      $('modalAccess').textContent = role.access;
+      $('modalClue').textContent = role.clue;
+      $('modalAffiliation').textContent = 'Será revelada no final do jogo';
+      $('dossierModal').classList.add('show');
+    }
+
+    $('dossierModal').addEventListener('click', (e) => {
+      if (e.target === $('dossierModal') || e.target.closest('.modal-close')) {
+        $('dossierModal').classList.remove('show');
+      }
+    });
+
+    // ===== MODO CLÁSSICO =====
+    function generateDossiers() {
+      const num = Number($('numJogadores').value);
+      const list = $('listaDossies');
+      list.innerHTML = '';
+      rolesBase.slice(0, num).forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'dossier-card';
+        card.innerHTML = `
+          <h3>${item.role}</h3>
+          <p><strong>Objetivo:</strong> ${item.objective}</p>
+          <p><strong>Acesso:</strong> ${item.access}</p>
+          <p style="font-style: italic; margin-top: 10px;"><strong>Pista Secreta:</strong> "${item.clue}"</p>
+        `;
+        card.addEventListener('click', () => {
+          showDossierModal(index);
+          state.selectedDossier = index;
+        });
+        list.appendChild(card);
+      });
+      $('dossiesInfo').textContent = `${num} dossiês gerados com sucesso. Clique em cada um para ver os detalhes.`;
+    }
+
+    // ===== RESTO DO JOGO (Inalterado) =====
     function setMessage(id, text, type) {
       const el = $(id);
       el.textContent = text;
@@ -717,24 +1112,6 @@
       $('arquivoConteudo').classList.add('hidden');
       updateSummary();
       refreshGrid();
-    }
-
-    function generateDossiers() {
-      const num = Number($('numJogadores').value);
-      const list = $('listaDossies');
-      list.innerHTML = '';
-      rolesBase.slice(0, num).forEach((item, index) => {
-        const article = document.createElement('article');
-        article.className = 'dossier';
-        article.innerHTML = `
-          <div class="small-text">Dossiê ${index + 1}</div>
-          <strong>${item.role}</strong>
-          <span class="badge ${item.affiliation.toLowerCase()}">${item.affiliation}</span>
-          <div class="small-text">${item.clue}</div>
-        `;
-        list.appendChild(article);
-      });
-      $('dossiesInfo').textContent = `${num} dossiês gerados com sucesso.`;
     }
 
     function showHint(puzzleKey, boxId) {
@@ -857,122 +1234,6 @@
     $('btnAlpha').addEventListener('click', () => activateScenario('ALPHA'));
     $('btnBeta').addEventListener('click', () => activateScenario('BETA'));
     $('btnGamma').addEventListener('click', () => activateScenario('GAMMA'));
-
-    // Dados da sopa de letras - Palavras chave: SISTEMA, 03:00, ACESSOU
-    const puzzle2Data = {
-      grid: [
-        ["T","E","R","M","I","N","A","L","U","Y","X","Y","E","Q","A","A","M","E","T","S"],
-        ["P","E","R","M","I","S","S","A","O","L","E","E","A","U","T","O","R","I","Z","A"],
-        ["I","M","C","G","O","M","O","R","T","R","U","O","A","E","E","A","I","T","N","K"],
-        ["I","R","T","O","E","C","T","E","C","I","O","E","C","Q","C","F","R","R","F","U"],
-        ["A","M","Q","E","A","E","O","R","O","L","A","V","L","D","L","T","T","O","T","P"],
-        ["L","R","E","G","I","S","T","O","E","D","A","D","I","L","I","B","I","S","S","E"],
-        ["S","I","S","T","E","M","A","C","U","A","C","A","O","C","O","N","T","R","O","L"],
-        ["E","V","A","C","U","A","C","A","O","P","A","N","E","L","E","R","R","O","A","T"],
-        ["E","N","T","R","A","D","A","S","E","R","V","I","D","O","R","R","E","G","I","S"],
-        ["E","V","E","N","T","O","S","E","R","V","I","D","O","R","B","L","O","Q","U","E"],
-        ["A","T","R","A","S","O","E","R","R","O","P","O","R","T","A","R","E","D","E","L"],
-        ["A","C","E","S","S","O","U","F","A","L","H","A","L","O","G","I","N","E","N","T"]
-      ],
-      words: [
-        "TERMINAL","PERMISSAO","AUTORIZACAO","CONTROLO","ENTRADA","SERVIDOR",
-        "REGISTO","EVENTO","SISTEMA","PAINEL","FALHA","LOGIN","ATRASO","ERRO",
-        "PORTA","REDE","BLOQUEIO","EMERGENCIA","EVACUACAO","ACESSOU",
-        "ACESSIBILIDADE","ANTECIPACAO","PRIORIDADE","0300"
-      ],
-      keyWords: ["SISTEMA","0300","ACESSOU"]
-    };
-
-    (function() {
-      const gridElem = document.getElementById('puzzle2-grid');
-      const wordsElem = document.getElementById('puzzle2-words');
-      const statusElem = document.getElementById('puzzle2-status');
-      const keyStatusElem = document.getElementById('puzzle2-key-status');
-      if (!gridElem || !wordsElem || !statusElem || !puzzle2Data) return;
-
-      const rows = puzzle2Data.grid.length;
-      const cols = puzzle2Data.grid[0].length;
-      let selectedCells = [];
-      let foundWords = new Set();
-      let foundKeyWords = new Set();
-
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const ch = puzzle2Data.grid[r][c] || ' ';
-          const cell = document.createElement('div');
-          cell.className = 'puzzle2-cell';
-          cell.textContent = ch;
-          cell.dataset.row = r;
-          cell.dataset.col = c;
-          cell.addEventListener('click', onCellClick);
-          gridElem.appendChild(cell);
-        }
-      }
-
-      puzzle2Data.words.forEach(w => {
-        const span = document.createElement('span');
-        span.textContent = w;
-        span.id = 'puzzle2-word-' + w;
-        span.dataset.iskey = puzzle2Data.keyWords.includes(w) ? 'true' : 'false';
-        wordsElem.appendChild(span);
-      });
-
-      updateStatus();
-
-      function onCellClick(e) {
-        const cell = e.currentTarget;
-        const row = parseInt(cell.dataset.row, 10);
-        const col = parseInt(cell.dataset.col, 10);
-        if (!cell.textContent.trim()) return;
-        const idx = selectedCells.findIndex(c => c.row === row && c.col === col);
-        if (idx >= 0) {
-          selectedCells.splice(idx, 1);
-          cell.classList.remove('selected');
-        } else {
-          selectedCells.push({ row, col, elem: cell });
-          cell.classList.add('selected');
-        }
-        checkSelection();
-      }
-
-      function checkSelection() {
-        if (selectedCells.length === 0) return;
-        const ordered = selectedCells.slice().sort((a, b) => {
-          if (a.row === b.row) return a.col - b.col;
-          return a.row - b.row;
-        });
-        const text = ordered.map(c => puzzle2Data.grid[c.row][c.col]).join('');
-        puzzle2Data.words.forEach(word => {
-          if (text === word && !foundWords.has(word)) {
-            foundWords.add(word);
-            const isKeyWord = puzzle2Data.keyWords.includes(word);
-            
-            if (isKeyWord) {
-              foundKeyWords.add(word);
-              ordered.forEach(c => c.elem.classList.add('found-key'));
-            } else {
-              ordered.forEach(c => c.elem.classList.add('found'));
-            }
-            
-            const span = document.getElementById('puzzle2-word-' + word);
-            if (span) {
-              span.classList.add(isKeyWord ? 'found-key' : 'found');
-            }
-            
-            selectedCells.forEach(c => c.elem.classList.remove('selected'));
-            selectedCells = [];
-            updateStatus();
-          }
-        });
-      }
-
-      function updateStatus() {
-        statusElem.textContent =
-          `Palavras encontradas: ${foundWords.size} / ${puzzle2Data.words.length}`;
-        keyStatusElem.textContent =
-          `Palavras chave encontradas: ${foundKeyWords.size} / ${puzzle2Data.keyWords.length}`;
-      }
-    })();
 
     // Inicialização
     generateDossiers();
