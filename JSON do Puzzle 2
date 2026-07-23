@@ -1,0 +1,39 @@
+<script>
+const puzzle2Data = {
+  grid: [
+    ["E","S","T","E","R","M","I","N","A","L","U","Y","X","Y","E","Q","A","A","M","E","T","S","I","S","G","U","P","O","X","V","D","A"],
+    ["P","E","R","M","I","S","S","Ã","O","L","E","E","A","U","T","O","R","I","Z","A","Ç","Ã","O","B","C","P","R","C","R","R","K","G"],
+    ["I","M","Ç","G","O","M","O","R","T","R","U","O","A","E","Ê","A","I","T","N","K","N","I","N","0","O","A","D","S","P","N","N","S"],
+    ["I","R","T","O","E","C","3","E","Ç","I","O","E","C","Q","C","F","R","R","F","U","R","0","C","Ã","V","P","C","I","L","R","O","I"],
+    ["A","M","Q","E","0","E","O","R","O","L","A","V","L","D","L","T","T","O","T","P","A","C","E","R","H","Z","O","A","H","N","L","P"],
+    ["L","R","E","G","I","S","T","O","E","D","A","D","I","L","I","B","I","S","S","E","C","A","L","E","N","I","A","P","K","A","C","E"],
+    ["S","S","O","U","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]
+  ],
+  words: [
+    "ACESSIBILIDADE",
+    "ANTECIPAÇÃO",
+    "AUTORIZAÇÃO",
+    "PRIORIDADE",
+    "BLOQUEIO",
+    "EMERGÊNCIA",
+    "EVACUAÇÃO",
+    "PERMISSÃO",
+    "CONTROLO",
+    "TERMINAL",
+    "ENTRADA",
+    "SERVIDOR",
+    "REGISTO",
+    "EVENTO",
+    "SISTEMA",
+    "PAINEL",
+    "FALHA",
+    "LOGIN",
+    "03:00",
+    "ATRASO",
+    "ERRO",
+    "PORTA",
+    "REDE",
+    "ACESSOU"
+  ]
+};
+</script>
